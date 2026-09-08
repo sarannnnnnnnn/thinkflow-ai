@@ -1,14 +1,79 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Brain, ArrowRight, Eye, EyeOff } from "lucide-react";
-import { Link } from "react-router-dom";
+import {
+  Brain,
+  ArrowRight,
+  Eye,
+  EyeOff,
+  Sun,
+  Moon,
+} from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 
 function Login() {
+  const navigate = useNavigate();
+
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const [darkMode, setDarkMode] = useState(() => {
+    return localStorage.getItem("thinkflow_theme") === "dark";
+  });
+
+  useEffect(() => {
+    localStorage.setItem(
+      "thinkflow_theme",
+      darkMode ? "dark" : "light"
+    );
+  }, [darkMode]);
+
+  const toggleTheme = () => {
+    setDarkMode((previous) => !previous);
+  };
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    setError("");
+
+    if (!email.trim() || !password.trim()) {
+      setError("Please enter your email and password.");
+      return;
+    }
+
+    const savedUser = JSON.parse(
+      localStorage.getItem("thinkflow_user")
+    );
+
+    if (!savedUser) {
+      setError("No account found. Please create an account first.");
+      return;
+    }
+
+    const emailMatches =
+      savedUser.email.toLowerCase() ===
+      email.trim().toLowerCase();
+
+    const passwordMatches =
+      savedUser.password === password;
+
+    if (!emailMatches || !passwordMatches) {
+      setError("Incorrect email or password.");
+      return;
+    }
+
+    localStorage.setItem("thinkflow_logged_in", "true");
+
+    navigate("/dashboard");
+  };
 
   return (
-    <div className="auth-page">
-
+    <div
+      className={`auth-page ${
+        darkMode ? "auth-dark" : "auth-light"
+      }`}
+    >
       <div className="background">
         <div className="glow glow-one" />
         <div className="glow glow-two" />
@@ -17,16 +82,36 @@ function Login() {
         <div className="noise" />
       </div>
 
+      <button
+        className="auth-theme-button"
+        onClick={toggleTheme}
+        type="button"
+        title={darkMode ? "Switch to light mode" : "Switch to dark mode"}
+      >
+        {darkMode ? <Sun size={18} /> : <Moon size={18} />}
+
+        <span>
+          {darkMode ? "Light mode" : "Dark mode"}
+        </span>
+      </button>
+
       <motion.div
         className="auth-card glass"
-        initial={{ opacity: 0, y: 25, scale: 0.97 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
+        initial={{
+          opacity: 0,
+          y: 25,
+          scale: 0.97,
+        }}
+        animate={{
+          opacity: 1,
+          y: 0,
+          scale: 1,
+        }}
         transition={{
           duration: 0.7,
           ease: [0.16, 1, 0.3, 1],
         }}
       >
-
         <Link to="/" className="auth-logo">
           <div className="auth-logo-mark">
             <Brain size={22} />
@@ -51,32 +136,38 @@ function Login() {
           </p>
         </div>
 
-        <form className="auth-form">
-
+        <form className="auth-form" onSubmit={handleLogin}>
           <div className="auth-field">
             <label>Email</label>
 
             <input
               type="email"
               placeholder="you@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
 
           <div className="auth-field">
-
             <div className="password-label">
               <label>Password</label>
 
-              <button type="button">
+              <button
+                type="button"
+                onClick={() =>
+                  setError("Password reset is not available in this demo.")
+                }
+              >
                 Forgot password?
               </button>
             </div>
 
             <div className="password-input">
-
               <input
                 type={showPassword ? "text" : "password"}
                 placeholder="Enter your password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
 
               <button
@@ -91,10 +182,14 @@ function Login() {
                   <Eye size={17} />
                 )}
               </button>
-
             </div>
-
           </div>
+
+          {error && (
+            <div className="auth-error">
+              {error}
+            </div>
+          )}
 
           <button
             type="submit"
@@ -103,7 +198,6 @@ function Login() {
             Sign in
             <ArrowRight size={17} />
           </button>
-
         </form>
 
         <div className="auth-divider">
@@ -117,9 +211,7 @@ function Login() {
             Create one
           </Link>
         </p>
-
       </motion.div>
-
     </div>
   );
 }

@@ -2281,3 +2281,38 @@ html {
   }
 
 }
+
+.feature-card {
+  color: #f8fafc !important;
+}
+
+.feature-card h3 {
+  color: #ffffff !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.feature-card p {
+  color: #9da6bc !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.feature-card span {
+  color: #7f8aa3 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.auth-error {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 11px 13px;
+  margin-top: -4px;
+  border-radius: 9px;
+  font-size: 12px;
+  line-height: 1.4;
+  color: #ff8f9b;
+  background: rgba(255, 70, 90, 0.08);
+  border: 1px solid rgba(255, 70, 90, 0.2);
+}

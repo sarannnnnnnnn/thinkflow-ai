@@ -6,10 +6,12 @@ import {
   Play,
   RotateCcw,
   Loader2,
+  AlertCircle,
 } from "lucide-react";
+import Editor from "@monaco-editor/react";
 
-function ProblemInput({ onAnalysis }) {
-  const [language, setLanguage] = useState("Python");
+function ProblemInput({ onAnalysis, darkMode = true }) {
+  const [language, setLanguage] = useState("python");
   const [problem, setProblem] = useState("");
   const [solution, setSolution] = useState("");
   const [loading, setLoading] = useState(false);
@@ -25,7 +27,7 @@ function ProblemInput({ onAnalysis }) {
     e.preventDefault();
 
     if (!problem.trim() || !solution.trim()) {
-      setError("Please enter both the problem and your solution.");
+      setError("Please enter the problem and your solution.");
       return;
     }
 
@@ -52,10 +54,11 @@ function ProblemInput({ onAnalysis }) {
       }
 
       onAnalysis(data);
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      console.error(err);
+
       setError(
-        error.message || "Unable to connect to the AI engine."
+        err.message || "Something went wrong while analyzing your solution."
       );
     } finally {
       setLoading(false);
@@ -69,73 +72,149 @@ function ProblemInput({ onAnalysis }) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
     >
+      {/* HEADER */}
       <div className="problem-input-header">
-        <div className="problem-input-title">
-          <div className="problem-input-icon">
-            <Sparkles size={19} />
-          </div>
+        <div>
+          <span className="dashboard-eyebrow">
+            THINKFLOW / ANALYZE
+          </span>
 
-          <div>
-            <span>THINKFLOW ENGINE</span>
-            <h2>Analyze your thinking</h2>
-          </div>
+          <h2>Submit your solution</h2>
+
+          <p>
+            Give ThinkFlow a problem and your approach. AI will analyze how
+            you think.
+          </p>
         </div>
 
-        <div className="language-select">
-          <Code2 size={15} />
+        {/* LANGUAGE */}
+        <div className="language-selector">
+          <Code2 size={16} />
 
           <select
             value={language}
             onChange={(e) => setLanguage(e.target.value)}
           >
-            <option>Python</option>
-            <option>JavaScript</option>
-            <option>Java</option>
-            <option>C++</option>
+            <option value="python">Python</option>
+            <option value="c">C</option>
+            <option value="java">Java</option>
+            <option value="cpp">C++</option>
           </select>
         </div>
       </div>
 
       <form onSubmit={handleAnalyze}>
-        <div className="problem-input-grid">
-          <div className="input-block">
-            <label>PROBLEM</label>
+        {/* PROBLEM */}
+        <div className="input-group problem-group">
+          <label>Problem</label>
 
-            <textarea
-              value={problem}
-              onChange={(e) => setProblem(e.target.value)}
-              placeholder="Describe the coding problem you're solving..."
-              rows={8}
-            />
+          <textarea
+            className="problem-textarea"
+            value={problem}
+            onChange={(e) => setProblem(e.target.value)}
+            placeholder="Example: Find the largest number in an array."
+            rows={3}
+          />
+        </div>
+
+        {/* CODE */}
+        <div className="input-group code-group">
+          <div className="code-editor-label">
+            <label>Your solution</label>
+
+            <span className="editor-language">
+              {language === "cpp" ? "C++" : language.toUpperCase()}
+            </span>
           </div>
 
-          <div className="input-block">
-            <label>YOUR SOLUTION</label>
-
-            <textarea
+          <div className="monaco-wrapper">
+            <Editor
+  height="430px"
+  language={language}
+  theme={darkMode ? "vs-dark" : "vs"}
               value={solution}
-              onChange={(e) => setSolution(e.target.value)}
-              placeholder="Paste or write your solution here..."
-              rows={8}
-              className="code-input"
+              onChange={(value) => setSolution(value || "")}
+              options={{
+                fontSize: 15,
+
+                fontFamily:
+                  "JetBrains Mono, Fira Code, Consolas, monospace",
+
+                lineHeight: 23,
+
+                minimap: {
+                  enabled: false,
+                },
+
+                automaticLayout: true,
+
+                wordWrap: "on",
+
+                scrollBeyondLastLine: false,
+
+                smoothScrolling: true,
+
+                cursorBlinking: "smooth",
+
+                cursorSmoothCaretAnimation: "on",
+
+                padding: {
+                  top: 18,
+                  bottom: 18,
+                },
+
+                tabSize: 4,
+
+                insertSpaces: true,
+
+                autoIndent: "full",
+
+                bracketPairColorization: {
+                  enabled: true,
+                },
+
+                guides: {
+                  indentation: true,
+                  bracketPairs: true,
+                },
+
+                quickSuggestions: true,
+
+                lineNumbers: "on",
+
+                renderLineHighlight: "line",
+
+                overviewRulerBorder: false,
+
+                hideCursorInOverviewRuler: true,
+
+                folding: true,
+
+                mouseWheelZoom: true,
+
+                suggestOnTriggerCharacters: true,
+              }}
             />
           </div>
         </div>
 
+        {/* ERROR */}
         {error && (
           <div className="analysis-error">
-            {error}
+            <AlertCircle size={17} />
+            <span>{error}</span>
           </div>
         )}
 
-        <div className="problem-input-footer">
+        {/* BUTTONS */}
+        <div className="problem-input-actions">
           <button
             type="button"
             className="reset-button"
             onClick={handleReset}
             disabled={loading}
           >
-            <RotateCcw size={15} />
+            <RotateCcw size={16} />
             Reset
           </button>
 
@@ -146,13 +225,17 @@ function ProblemInput({ onAnalysis }) {
           >
             {loading ? (
               <>
-                <Loader2 size={15} className="spin" />
+                <Loader2
+                  size={17}
+                  className="spin"
+                />
                 Analyzing...
               </>
             ) : (
               <>
-                <Play size={15} />
-                Analyze thinking
+                <Sparkles size={17} />
+                Analyze Thinking
+                <Play size={14} />
               </>
             )}
           </button>

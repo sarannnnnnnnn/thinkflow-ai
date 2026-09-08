@@ -6,168 +6,322 @@ import {
   Bug,
   Layers3,
   Zap,
-  ArrowUpRight,
+  Check,
+  ArrowRight,
 } from "lucide-react";
 
 function AIInsight({ analysis }) {
-  const metrics = analysis
-    ? [
-        {
-          icon: Target,
-          name: "Algorithm Selection",
-          value: analysis.metrics.algorithmSelection,
-        },
-        {
-          icon: Bug,
-          name: "Debugging",
-          value: analysis.metrics.debugging,
-        },
-        {
-          icon: Layers3,
-          name: "Decomposition",
-          value: analysis.metrics.decomposition,
-        },
-        {
-          icon: Zap,
-          name: "Optimization",
-          value: analysis.metrics.optimization,
-        },
-      ]
-    : [
-        {
-          icon: Target,
-          name: "Algorithm Selection",
-          value: 82,
-        },
-        {
-          icon: Bug,
-          name: "Debugging",
-          value: 91,
-        },
-        {
-          icon: Layers3,
-          name: "Decomposition",
-          value: 74,
-        },
-        {
-          icon: Zap,
-          name: "Optimization",
-          value: 61,
-        },
-      ];
+  if (!analysis) {
+    return (
+      <section className="ai-report-card">
+        <div className="ai-report-header">
+          <div className="ai-report-title">
+            <div className="ai-report-icon">
+              <Sparkles size={20} />
+            </div>
+
+            <div>
+              <span>AI ANALYSIS</span>
+              <h2>Thinking Insight</h2>
+            </div>
+          </div>
+
+          <div className="ai-status waiting">
+            <span />
+            WAITING
+          </div>
+        </div>
+
+        <div className="ai-empty">
+          <Brain size={42} />
+
+          <h3>No analysis yet</h3>
+
+          <p>
+            Submit a problem and your solution to
+            generate your AI analysis.
+          </p>
+        </div>
+      </section>
+    );
+  }
+
+  const metrics = [
+    {
+      icon: Target,
+      name: "Algorithm Selection",
+      value: Number(
+        analysis.metrics?.algorithmSelection || 0
+      ),
+    },
+    {
+      icon: Bug,
+      name: "Debugging",
+      value: Number(
+        analysis.metrics?.debugging || 0
+      ),
+    },
+    {
+      icon: Layers3,
+      name: "Decomposition",
+      value: Number(
+        analysis.metrics?.decomposition || 0
+      ),
+    },
+    {
+      icon: Zap,
+      name: "Optimization",
+      value: Number(
+        analysis.metrics?.optimization || 0
+      ),
+    },
+  ];
 
   return (
-    <motion.div
-      className="ai-insight-card glass"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
+    <motion.section
+      className="ai-report-card"
+      initial={{
+        opacity: 0,
+        y: 15,
+      }}
+      animate={{
+        opacity: 1,
+        y: 0,
+      }}
+      transition={{
+        duration: 0.45,
+      }}
     >
-      <div className="ai-insight-header">
-        <div className="ai-insight-title">
-          <div className="ai-insight-icon">
-            <Sparkles size={18} />
+
+      {/* ================= HEADER ================= */}
+
+      <div className="ai-report-header">
+
+        <div className="ai-report-title">
+
+          <div className="ai-report-icon">
+            <Sparkles size={20} />
           </div>
 
           <div>
-            <span>THINKFLOW ENGINE</span>
-            <h2>AI Insight</h2>
+            <span>AI ANALYSIS</span>
+
+            <h2>
+              Thinking Insight
+            </h2>
           </div>
+
         </div>
 
-        <div className="ai-live">
+        <div className="ai-status analyzed">
           <span />
-          {analysis ? "ANALYZED" : "READY"}
+          ANALYZED
         </div>
+
       </div>
+
+
+      {/* ================= PATTERN ================= */}
 
       <div className="ai-pattern">
-        <div className="ai-pattern-icon">
-          <Brain size={22} />
+
+
+
+        <div className="pattern-row">
+
+          <div className="pattern-icon">
+            <Brain size={25} />
+          </div>
+
+          <div className="pattern-content">
+
+            <h3>
+              {analysis.thinkingPattern}
+            </h3>
+
+            <p>
+              {analysis.summary}
+            </p>
+
+          </div>
+
         </div>
 
-        <div>
-          <span>PRIMARY THINKING PATTERN</span>
-
-          <h3>
-            {analysis
-              ? analysis.thinkingPattern
-              : "Awaiting analysis"}
-          </h3>
-        </div>
       </div>
 
-      <div className="ai-metrics">
-        {metrics.map((metric, index) => {
-          const Icon = metric.icon;
 
-          return (
-            <motion.div
-              className="ai-metric"
-              key={metric.name}
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{
-                duration: 0.4,
-                delay: index * 0.08,
-              }}
-            >
-              <div className="ai-metric-top">
-                <div className="ai-metric-name">
-                  <Icon size={14} />
-                  <span>{metric.name}</span>
+      {/* ================= METRICS ================= */}
+
+      <div className="metrics-wrapper">
+
+        <div className="report-label">
+          THINKING METRICS
+        </div>
+
+        <div className="metrics-grid">
+
+          {metrics.map((metric, index) => {
+
+            const Icon = metric.icon;
+
+            return (
+              <motion.div
+                className="metric-card"
+                key={metric.name}
+                initial={{
+                  opacity: 0,
+                  y: 8,
+                }}
+                animate={{
+                  opacity: 1,
+                  y: 0,
+                }}
+                transition={{
+                  delay: index * 0.06,
+                }}
+              >
+
+                <div className="metric-top">
+
+                  <div className="metric-title">
+
+                    <Icon size={17} />
+
+                    <span>
+                      {metric.name}
+                    </span>
+
+                  </div>
+
+                  <strong>
+                    {metric.value}%
+                  </strong>
+
                 </div>
 
-                <strong>{metric.value}%</strong>
-              </div>
+                <div className="metric-progress">
 
-              <div className="ai-metric-track">
-                <motion.div
-                  initial={{ width: 0 }}
-                  animate={{
-                    width: `${metric.value}%`,
-                  }}
-                  transition={{
-                    duration: 0.9,
-                    delay: 0.2 + index * 0.08,
-                    ease: "easeOut",
-                  }}
-                />
-              </div>
-            </motion.div>
-          );
-        })}
+                  <motion.div
+                    initial={{
+                      width: 0,
+                    }}
+                    animate={{
+                      width: `${metric.value}%`,
+                    }}
+                    transition={{
+                      duration: 0.7,
+                      delay:
+                        0.15 +
+                        index * 0.06,
+                    }}
+                  />
+
+                </div>
+
+              </motion.div>
+            );
+          })}
+
+        </div>
+
       </div>
 
-      <div className="ai-observation">
-        <div className="ai-observation-label">
-          <Sparkles size={13} />
+
+      {/* ================= OBSERVATION ================= */}
+
+      <div className="observation">
+
+        <div className="report-label">
           KEY OBSERVATION
         </div>
 
-        <p>
-          {analysis
-            ? analysis.observation
-            : "Submit a problem and your solution to generate a personalized AI observation."}
-        </p>
+        <div className="observation-content">
+
+          <Sparkles size={18} />
+
+          <p>
+            {analysis.observation}
+          </p>
+
+        </div>
+
       </div>
 
-      {analysis && (
-        <div className="ai-summary">
-          <div className="ai-observation-label">
-            <Brain size={13} />
-            AI SUMMARY
+
+      {/* ================= BOTTOM ================= */}
+
+      <div className="report-bottom">
+
+        {/* STRENGTHS */}
+
+        <div className="report-column">
+
+          <div className="report-label">
+            STRENGTHS
           </div>
 
-          <p>{analysis.summary}</p>
-        </div>
-      )}
+          <div className="report-items">
 
-      <button className="ai-insight-action">
-        View detailed analysis
-        <ArrowUpRight size={16} />
-      </button>
-    </motion.div>
+            {(analysis.strengths || []).map(
+              (item, index) => (
+                <div
+                  className="report-item"
+                  key={index}
+                >
+
+                  <div className="check-icon">
+                    <Check size={13} />
+                  </div>
+
+                  <p>
+                    {item}
+                  </p>
+
+                </div>
+              )
+            )}
+
+          </div>
+
+        </div>
+
+
+        {/* IMPROVEMENTS */}
+
+        <div className="report-column">
+
+          <div className="report-label">
+            AREAS TO IMPROVE
+          </div>
+
+          <div className="report-items">
+
+            {(analysis.improvements || []).map(
+              (item, index) => (
+                <div
+                  className="report-item"
+                  key={index}
+                >
+
+                  <div className="arrow-icon">
+                    <ArrowRight size={13} />
+                  </div>
+
+                  <p>
+                    {item}
+                  </p>
+
+                </div>
+              )
+            )}
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </motion.section>
   );
 }
 
