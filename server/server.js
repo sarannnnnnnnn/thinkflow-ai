@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import OpenAI from "openai";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import pool from "./db.js";
+import pool, { initializeDatabase } from "./db.js";
 
 dotenv.config({
   path: new URL("./.env", import.meta.url),
@@ -560,16 +560,19 @@ app.delete(
 // START SERVER
 // ==================================================
 
-const startServer = () => {
-  app.listen(
-    PORT,
-    "0.0.0.0",
-    () => {
-      console.log(
-        `ThinkFlow AI server running on http://localhost:${PORT}`
-      );
-    }
-  );
+const startServer = async () => {
+  const databaseReady = await initializeDatabase();
+
+  if (!databaseReady) {
+    console.error("Server startup cancelled because database initialization failed.");
+    process.exit(1);
+  }
+
+  app.listen(PORT, "0.0.0.0", () => {
+    console.log(
+      `ThinkFlow AI server running on http://localhost:${PORT}`
+    );
+  });
 };
 
 startServer();

@@ -1,30 +1,33 @@
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { Link, useNavigate } from "react-router-dom";
 import {
-  Brain,
+  ArrowLeft,
   ArrowRight,
+  Brain,
   Eye,
   EyeOff,
-  Sun,
   Moon,
+  Sun,
+  Lock,
+  Mail,
+  User,
+  AlertCircle,
 } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
 
 function Signup() {
   const navigate = useNavigate();
 
-  const [showPassword, setShowPassword] = useState(false);
+  const [darkMode, setDarkMode] = useState(() => {
+    return localStorage.getItem("thinkflow_theme") === "dark";
+  });
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-
-  const [darkMode, setDarkMode] = useState(() => {
-    return localStorage.getItem("thinkflow_theme") === "dark";
-  });
 
   useEffect(() => {
     localStorage.setItem(
@@ -33,17 +36,23 @@ function Signup() {
     );
   }, [darkMode]);
 
-  const toggleTheme = () => {
-    setDarkMode((previous) => !previous);
-  };
-
   const handleSignup = async (e) => {
     e.preventDefault();
 
     setError("");
 
-    if (!name.trim() || !email.trim() || !password.trim()) {
-      setError("Please fill in all fields.");
+    if (!name.trim()) {
+      setError("Please enter your full name.");
+      return;
+    }
+
+    if (!email.trim()) {
+      setError("Please enter your email address.");
+      return;
+    }
+
+    if (!password) {
+      setError("Please enter a password.");
       return;
     }
 
@@ -55,45 +64,67 @@ function Signup() {
     setLoading(true);
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/signup`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          email,
-          password,
-        }),
-      });
+      const apiUrl = import.meta.env.VITE_API_URL;
 
-      const data = await response.json();
+      if (!apiUrl) {
+        throw new Error("API URL is not configured.");
+      }
 
-      if (!response.ok) {
+      const response = await fetch(
+        `${apiUrl}/api/auth/signup`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: name.trim(),
+            email: email.trim().toLowerCase(),
+            password,
+          }),
+        }
+      );
+
+      let data;
+
+      try {
+        data = await response.json();
+      } catch {
         throw new Error(
-          data.error || "Failed to create account."
+          "The server returned an invalid response."
         );
       }
 
-      // Store only authentication information temporarily.
-      // User account itself is stored in PostgreSQL.
+      if (!response.ok) {
+        throw new Error(
+          data?.error || "Failed to create account."
+        );
+      }
+
+      if (!data?.token) {
+        throw new Error(
+          "Account created, but no authentication token was received."
+        );
+      }
+
       sessionStorage.setItem(
         "thinkflow_token",
         data.token
       );
 
-      sessionStorage.setItem(
-        "thinkflow_user",
-        JSON.stringify(data.user)
-      );
+      if (data.user) {
+        sessionStorage.setItem(
+          "thinkflow_user",
+          JSON.stringify(data.user)
+        );
+      }
 
       navigate("/dashboard");
-
-    } catch (error) {
-      console.error("Signup error:", error);
+    } catch (err) {
+      console.error("Signup error:", err);
 
       setError(
-        error.message ||
+        err?.message ||
           "Something went wrong. Please try again."
       );
     } finally {
@@ -104,27 +135,38 @@ function Signup() {
   return (
     <div
       className={`auth-page ${
-        darkMode ? "auth-dark" : "auth-light"
+        darkMode ? "dark-mode" : "light-mode"
       }`}
     >
-
       {/* BACKGROUND */}
 
-      <div className="background">
-        <div className="glow glow-one" />
-        <div className="glow glow-two" />
-        <div className="glow glow-three" />
-        <div className="grid-background" />
-        <div className="noise" />
+      <div className="auth-background">
+        <div className="auth-glow auth-glow-one" />
+        <div className="auth-glow auth-glow-two" />
+        <div className="auth-grid" />
       </div>
 
-
-      {/* THEME BUTTON */}
+      {/* BACK */}
 
       <button
-        className="auth-theme-button"
-        onClick={toggleTheme}
         type="button"
+        className="auth-back-button"
+        onClick={() => navigate("/")}
+        disabled={loading}
+      >
+        <ArrowLeft size={17} />
+        Back
+      </button>
+
+      {/* THEME */}
+
+      <button
+        type="button"
+        className="auth-theme-button"
+        onClick={() =>
+          setDarkMode((previous) => !previous)
+        }
+        aria-label="Toggle theme"
         title={
           darkMode
             ? "Switch to light mode"
@@ -136,207 +178,224 @@ function Signup() {
         ) : (
           <Moon size={18} />
         )}
-
-        <span>
-          {darkMode
-            ? "Light mode"
-            : "Dark mode"}
-        </span>
       </button>
 
+      {/* CONTENT */}
 
-      {/* CARD */}
+      <main className="auth-container">
+        <div className="auth-card signup-card">
 
-      <motion.div
-        className="auth-card glass signup-card"
-        initial={{
-          opacity: 0,
-          y: 25,
-          scale: 0.97,
-        }}
-        animate={{
-          opacity: 1,
-          y: 0,
-          scale: 1,
-        }}
-        transition={{
-          duration: 0.7,
-          ease: [0.16, 1, 0.3, 1],
-        }}
-      >
+          {/* LOGO */}
 
-        {/* LOGO */}
-
-        <Link
-          to="/"
-          className="auth-logo"
-        >
-          <div className="auth-logo-mark">
-            <Brain size={22} />
-          </div>
-
-          <span>
-            Think<span>Flow</span>
-          </span>
-        </Link>
-
-
-        {/* HEADING */}
-
-        <div className="auth-heading">
-
-          <small>
-            GET STARTED
-          </small>
-
-          <h1>
-            Start your
-            <br />
-            <span>
-              thinking journey.
-            </span>
-          </h1>
-
-          <p>
-            Create your account and discover
-            how you solve problems.
-          </p>
-
-        </div>
-
-
-        {/* FORM */}
-
-        <form
-          className="auth-form"
-          onSubmit={handleSignup}
-        >
-
-          {/* NAME */}
-
-          <div className="auth-field">
-
-            <label>
-              Full name
-            </label>
-
-            <input
-              type="text"
-              placeholder="Your name"
-              value={name}
-              onChange={(e) =>
-                setName(e.target.value)
-              }
-            />
-
-          </div>
-
-
-          {/* EMAIL */}
-
-          <div className="auth-field">
-
-            <label>
-              Email
-            </label>
-
-            <input
-              type="email"
-              placeholder="you@example.com"
-              value={email}
-              onChange={(e) =>
-                setEmail(e.target.value)
-              }
-            />
-
-          </div>
-
-
-          {/* PASSWORD */}
-
-          <div className="auth-field">
-
-            <label>
-              Password
-            </label>
-
-            <div className="password-input">
-
-              <input
-                type={
-                  showPassword
-                    ? "text"
-                    : "password"
-                }
-                placeholder="Create a password"
-                value={password}
-                onChange={(e) =>
-                  setPassword(e.target.value)
-                }
-              />
-
-              <button
-                type="button"
-                onClick={() =>
-                  setShowPassword(
-                    !showPassword
-                  )
-                }
-              >
-                {showPassword ? (
-                  <EyeOff size={17} />
-                ) : (
-                  <Eye size={17} />
-                )}
-              </button>
-
+          <Link
+            to="/"
+            className="auth-logo"
+            style={{ textDecoration: "none" }}
+          >
+            <div className="auth-logo-icon">
+              <Brain size={22} />
             </div>
 
-          </div>
+            <span>
+              Think<span>Flow</span>
+            </span>
+          </Link>
 
+          {/* HEADING */}
+
+          <div className="auth-heading">
+            <span className="auth-label">
+              GET STARTED
+            </span>
+
+            <h1>Create your account.</h1>
+
+            <p>
+              Start understanding how you think
+              and solve problems.
+            </p>
+          </div>
 
           {/* ERROR */}
 
           {error && (
-            <div className="auth-error">
-              {error}
+            <div
+              className="auth-error"
+              role="alert"
+            >
+              <AlertCircle size={17} />
+              <span>{error}</span>
             </div>
           )}
 
+          {/* FORM */}
 
-          {/* SUBMIT */}
-
-          <button
-            type="submit"
-            className="auth-submit"
-            disabled={loading}
+          <form
+            className="auth-form"
+            onSubmit={handleSignup}
           >
-            {loading
-              ? "Creating account..."
-              : "Create account"}
 
-            {!loading && (
-              <ArrowRight size={17} />
-            )}
-          </button>
+            {/* NAME */}
 
-        </form>
+            <div className="auth-field">
+              <label htmlFor="name">
+                Full name
+              </label>
 
+              <div className="auth-input-wrapper">
+                <User size={17} />
 
-        {/* LOGIN */}
+                <input
+                  id="name"
+                  name="name"
+                  type="text"
+                  placeholder="Your name"
+                  value={name}
+                  onChange={(e) => {
+                    setName(e.target.value);
 
-        <p className="auth-switch">
+                    if (error) {
+                      setError("");
+                    }
+                  }}
+                  autoComplete="name"
+                  disabled={loading}
+                  required
+                />
+              </div>
+            </div>
 
-          Already have an account?
+            {/* EMAIL */}
 
-          <Link to="/login">
-            Sign in
-          </Link>
+            <div className="auth-field">
+              <label htmlFor="email">
+                Email address
+              </label>
 
-        </p>
+              <div className="auth-input-wrapper">
+                <Mail size={17} />
 
-      </motion.div>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  placeholder="you@example.com"
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
 
+                    if (error) {
+                      setError("");
+                    }
+                  }}
+                  autoComplete="email"
+                  disabled={loading}
+                  required
+                />
+              </div>
+            </div>
+
+            {/* PASSWORD */}
+
+            <div className="auth-field">
+              <label htmlFor="password">
+                Password
+              </label>
+
+              <div className="auth-input-wrapper">
+                <Lock size={17} />
+
+                <input
+                  id="password"
+                  name="password"
+                  type={
+                    showPassword
+                      ? "text"
+                      : "password"
+                  }
+                  placeholder="Create a password"
+                  value={password}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+
+                    if (error) {
+                      setError("");
+                    }
+                  }}
+                  autoComplete="new-password"
+                  disabled={loading}
+                  required
+                />
+
+                <button
+                  type="button"
+                  className="password-toggle"
+                  onClick={() =>
+                    setShowPassword(
+                      (previous) => !previous
+                    )
+                  }
+                  disabled={loading}
+                  aria-label={
+                    showPassword
+                      ? "Hide password"
+                      : "Show password"
+                  }
+                >
+                  {showPassword ? (
+                    <EyeOff size={17} />
+                  ) : (
+                    <Eye size={17} />
+                  )}
+                </button>
+              </div>
+            </div>
+
+            {/* SUBMIT */}
+
+            <button
+              type="submit"
+              className="auth-submit-button"
+              disabled={loading}
+            >
+              {loading ? (
+                <>
+                  <span className="auth-spinner" />
+                  Creating account...
+                </>
+              ) : (
+                <>
+                  Create account
+                  <ArrowRight size={18} />
+                </>
+              )}
+            </button>
+          </form>
+
+          {/* LOGIN */}
+
+          <div className="auth-switch">
+            <span>
+              Already have an account?
+            </span>
+
+            <Link to="/login">
+              Sign in
+            </Link>
+          </div>
+
+          {/* FOOTER */}
+
+          <div className="auth-footer">
+            <span>THINKFLOW AI</span>
+            <span>•</span>
+            <span>
+              UNDERSTAND THE PROCESS
+            </span>
+          </div>
+
+        </div>
+      </main>
     </div>
   );
 }

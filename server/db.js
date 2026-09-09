@@ -24,6 +24,10 @@ pool.on("error", (error) => {
 
 const initializeDatabase = async () => {
   try {
+    // ==============================
+    // USERS TABLE
+    // ==============================
+
     await pool.query(`
       CREATE TABLE IF NOT EXISTS users (
         id SERIAL PRIMARY KEY,
@@ -36,29 +40,42 @@ const initializeDatabase = async () => {
 
     console.log("Users table ready");
 
+    // ==============================
+    // ANALYSES TABLE
+    // ==============================
+
     await pool.query(`
       CREATE TABLE IF NOT EXISTS analyses (
         id SERIAL PRIMARY KEY,
-        user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        user_id INTEGER NOT NULL
+          REFERENCES users(id)
+          ON DELETE CASCADE,
+
         problem TEXT NOT NULL,
         solution TEXT NOT NULL,
         language VARCHAR(30) NOT NULL,
+
         thinking_pattern TEXT,
         summary TEXT,
         observation TEXT,
+
         metrics JSONB,
         strengths JSONB,
         improvements JSONB,
+
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
     `);
 
     console.log("Analyses table ready");
+
+    return true;
   } catch (error) {
     console.error("Database initialization error:", error);
+    return false;
   }
 };
 
-initializeDatabase();
+export { initializeDatabase };
 
 export default pool;
