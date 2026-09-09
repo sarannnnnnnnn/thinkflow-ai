@@ -14,9 +14,12 @@ function Login() {
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const [darkMode, setDarkMode] = useState(() => {
     return localStorage.getItem("thinkflow_theme") === "dark";
@@ -33,8 +36,9 @@ function Login() {
     setDarkMode((previous) => !previous);
   };
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
+
     setError("");
 
     if (!email.trim() || !password.trim()) {
@@ -42,30 +46,55 @@ function Login() {
       return;
     }
 
-    const savedUser = JSON.parse(
-      localStorage.getItem("thinkflow_user")
-    );
+    setLoading(true);
 
-    if (!savedUser) {
-      setError("No account found. Please create an account first.");
-      return;
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/auth/login`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: email.trim(),
+            password,
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          data.error || "Incorrect email or password."
+        );
+      }
+
+      // Store JWT and user information for the current session
+      sessionStorage.setItem(
+        "thinkflow_token",
+        data.token
+      );
+
+      sessionStorage.setItem(
+        "thinkflow_user",
+        JSON.stringify(data.user)
+      );
+
+      // Login successful
+      navigate("/dashboard");
+
+    } catch (error) {
+      console.error("Login error:", error);
+
+      setError(
+        error.message ||
+          "Something went wrong. Please try again."
+      );
+    } finally {
+      setLoading(false);
     }
-
-    const emailMatches =
-      savedUser.email.toLowerCase() ===
-      email.trim().toLowerCase();
-
-    const passwordMatches =
-      savedUser.password === password;
-
-    if (!emailMatches || !passwordMatches) {
-      setError("Incorrect email or password.");
-      return;
-    }
-
-    localStorage.setItem("thinkflow_logged_in", "true");
-
-    navigate("/dashboard");
   };
 
   return (
@@ -74,6 +103,8 @@ function Login() {
         darkMode ? "auth-dark" : "auth-light"
       }`}
     >
+      {/* BACKGROUND */}
+
       <div className="background">
         <div className="glow glow-one" />
         <div className="glow glow-two" />
@@ -82,18 +113,30 @@ function Login() {
         <div className="noise" />
       </div>
 
+      {/* THEME BUTTON */}
+
       <button
         className="auth-theme-button"
         onClick={toggleTheme}
         type="button"
-        title={darkMode ? "Switch to light mode" : "Switch to dark mode"}
+        title={
+          darkMode
+            ? "Switch to light mode"
+            : "Switch to dark mode"
+        }
       >
-        {darkMode ? <Sun size={18} /> : <Moon size={18} />}
+        {darkMode ? (
+          <Sun size={18} />
+        ) : (
+          <Moon size={18} />
+        )}
 
         <span>
           {darkMode ? "Light mode" : "Dark mode"}
         </span>
       </button>
+
+      {/* CARD */}
 
       <motion.div
         className="auth-card glass"
@@ -112,7 +155,12 @@ function Login() {
           ease: [0.16, 1, 0.3, 1],
         }}
       >
-        <Link to="/" className="auth-logo">
+        {/* LOGO */}
+
+        <Link
+          to="/"
+          className="auth-logo"
+        >
           <div className="auth-logo-mark">
             <Brain size={22} />
           </div>
@@ -121,6 +169,8 @@ function Login() {
             Think<span>Flow</span>
           </span>
         </Link>
+
+        {/* HEADING */}
 
         <div className="auth-heading">
           <small>WELCOME BACK</small>
@@ -136,7 +186,14 @@ function Login() {
           </p>
         </div>
 
-        <form className="auth-form" onSubmit={handleLogin}>
+        {/* FORM */}
+
+        <form
+          className="auth-form"
+          onSubmit={handleLogin}
+        >
+          {/* EMAIL */}
+
           <div className="auth-field">
             <label>Email</label>
 
@@ -144,9 +201,14 @@ function Login() {
               type="email"
               placeholder="you@example.com"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                setError("");
+              }}
             />
           </div>
+
+          {/* PASSWORD */}
 
           <div className="auth-field">
             <div className="password-label">
@@ -155,7 +217,9 @@ function Login() {
               <button
                 type="button"
                 onClick={() =>
-                  setError("Password reset is not available in this demo.")
+                  setError(
+                    "Password reset is not available in this demo."
+                  )
                 }
               >
                 Forgot password?
@@ -164,10 +228,17 @@ function Login() {
 
             <div className="password-input">
               <input
-                type={showPassword ? "text" : "password"}
+                type={
+                  showPassword
+                    ? "text"
+                    : "password"
+                }
                 placeholder="Enter your password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  setError("");
+                }}
               />
 
               <button
@@ -185,24 +256,36 @@ function Login() {
             </div>
           </div>
 
+          {/* ERROR */}
+
           {error && (
             <div className="auth-error">
               {error}
             </div>
           )}
 
+          {/* SUBMIT */}
+
           <button
             type="submit"
             className="auth-submit"
+            disabled={loading}
           >
-            Sign in
-            <ArrowRight size={17} />
+            {loading ? "Signing in..." : "Sign in"}
+
+            {!loading && (
+              <ArrowRight size={17} />
+            )}
           </button>
         </form>
+
+        {/* DIVIDER */}
 
         <div className="auth-divider">
           <span>OR</span>
         </div>
+
+        {/* SIGNUP */}
 
         <p className="auth-switch">
           Don't have an account?

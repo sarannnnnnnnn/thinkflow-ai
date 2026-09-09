@@ -34,16 +34,39 @@ function Dashboard() {
      ================================================== */
 
   useEffect(() => {
-    const savedHistory =
-      localStorage.getItem("thinkflow_history");
-
-    if (savedHistory) {
+    const loadHistory = async () => {
       try {
-        setHistory(JSON.parse(savedHistory));
-      } catch {
+        const token = sessionStorage.getItem("thinkflow_token");
+
+        if (!token) {
+          setHistory([]);
+          return;
+        }
+
+        const response = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/analyses`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || "Failed to load history.");
+        }
+
+        setHistory(Array.isArray(data) ? data : []);
+      } catch (error) {
+        console.error("History loading error:", error);
         setHistory([]);
       }
-    }
+    };
+
+    loadHistory();
   }, []);
 
   /* ==================================================
@@ -64,42 +87,10 @@ function Dashboard() {
   const handleAnalysis = (result) => {
     setAnalysis(result);
 
-    const newItem = {
-      id: Date.now(),
-
-      thinkingPattern:
-        result.thinkingPattern,
-
-      summary:
-        result.summary,
-
-      observation:
-        result.observation,
-
-      metrics:
-        result.metrics,
-
-      strengths:
-        result.strengths,
-
-      improvements:
-        result.improvements,
-
-      createdAt:
-        new Date().toLocaleString(),
-    };
-
-    const updatedHistory = [
-      newItem,
-      ...history,
-    ];
-
-    setHistory(updatedHistory);
-
-    localStorage.setItem(
-      "thinkflow_history",
-      JSON.stringify(updatedHistory)
-    );
+    setHistory((previousHistory) => [
+      result,
+      ...previousHistory,
+    ]);
 
     setTimeout(() => {
       document
@@ -132,14 +123,37 @@ function Dashboard() {
      CLEAR HISTORY
      ================================================== */
 
-  const clearHistory = () => {
-    setHistory([]);
+  const clearHistory = async () => {
+    try {
+      const token = sessionStorage.getItem("thinkflow_token");
 
-    localStorage.removeItem(
-      "thinkflow_history"
-    );
+      if (!token) {
+        setHistory([]);
+        setAnalysis(null);
+        return;
+      }
 
-    setAnalysis(null);
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/analyses`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to clear history.");
+      }
+
+      setHistory([]);
+      setAnalysis(null);
+    } catch (error) {
+      console.error("Clear history error:", error);
+    }
   };
 
   /* ==================================================
@@ -187,7 +201,8 @@ function Dashboard() {
   const confirmLogout = () => {
     setShowLogoutPopup(false);
 
-    localStorage.removeItem("thinkflow_theme");
+    sessionStorage.removeItem("thinkflow_token");
+    sessionStorage.removeItem("thinkflow_user");
 
     window.location.href = "/";
   };

@@ -21,32 +21,43 @@ app.use(cors());
 app.use(express.json());
 
 
-// ================================
-// DATABASE INITIALIZATION
-// ================================
+// ==================================================
+// JWT AUTHENTICATION
+// ==================================================
 
-const initializeDatabase = async () => {
+const authenticateToken = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return res.status(401).json({
+      error: "Authentication required.",
+    });
+  }
+
+  const token = authHeader.split(" ")[1];
+
   try {
-    await pool.query(`
-      CREATE TABLE IF NOT EXISTS users (
-        id SERIAL PRIMARY KEY,
-        name VARCHAR(100) NOT NULL,
-        email VARCHAR(255) UNIQUE NOT NULL,
-        password_hash TEXT NOT NULL,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-      );
-    `);
+    const decoded = jwt.verify(
+      token,
+      process.env.JWT_SECRET
+    );
 
-    console.log("Users table ready");
+    req.user = decoded;
+
+    next();
   } catch (error) {
-    console.error("Database initialization error:", error);
+    console.error("JWT error:", error);
+
+    return res.status(401).json({
+      error: "Invalid or expired token.",
+    });
   }
 };
 
 
-// ================================
+// ==================================================
 // HOME
-// ================================
+// ==================================================
 
 app.get("/", (req, res) => {
   res.json({
@@ -55,15 +66,15 @@ app.get("/", (req, res) => {
 });
 
 
-// ================================
+// ==================================================
 // SIGNUP
-// ================================
+// ==================================================
 
 app.post("/api/auth/signup", async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
-    if (!name || !email || !password) {
+    if (!name?.trim() || !email?.trim() || !password) {
       return res.status(400).json({
         error: "Name, email and password are required.",
       });
@@ -77,9 +88,12 @@ app.post("/api/auth/signup", async (req, res) => {
 
     const normalizedEmail = email.trim().toLowerCase();
 
-    // Check existing user
     const existingUser = await pool.query(
-      "SELECT id FROM users WHERE email = $1",
+      `
+      SELECT id
+      FROM users
+      WHERE email = $1
+      `,
       [normalizedEmail]
     );
 
@@ -89,22 +103,27 @@ app.post("/api/auth/signup", async (req, res) => {
       });
     }
 
-    // Hash password
     const passwordHash = await bcrypt.hash(password, 10);
 
-    // Create user
     const result = await pool.query(
       `
-      INSERT INTO users (name, email, password_hash)
+      INSERT INTO users (
+        name,
+        email,
+        password_hash
+      )
       VALUES ($1, $2, $3)
       RETURNING id, name, email, created_at
       `,
-      [name.trim(), normalizedEmail, passwordHash]
+      [
+        name.trim(),
+        normalizedEmail,
+        passwordHash,
+      ]
     );
 
     const user = result.rows[0];
 
-    // Create JWT
     const token = jwt.sign(
       {
         userId: user.id,
@@ -119,7 +138,12 @@ app.post("/api/auth/signup", async (req, res) => {
     res.status(201).json({
       message: "Account created successfully.",
       token,
-      user,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        createdAt: user.created_at,
+      },
     });
 
   } catch (error) {
@@ -132,15 +156,15 @@ app.post("/api/auth/signup", async (req, res) => {
 });
 
 
-// ================================
+// ==================================================
 // LOGIN
-// ================================
+// ==================================================
 
 app.post("/api/auth/login", async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    if (!email || !password) {
+    if (!email?.trim() || !password) {
       return res.status(400).json({
         error: "Email and password are required.",
       });
@@ -150,7 +174,12 @@ app.post("/api/auth/login", async (req, res) => {
 
     const result = await pool.query(
       `
-      SELECT id, name, email, password_hash, created_at
+      SELECT
+        id,
+        name,
+        email,
+        password_hash,
+        created_at
       FROM users
       WHERE email = $1
       `,
@@ -165,7 +194,6 @@ app.post("/api/auth/login", async (req, res) => {
 
     const user = result.rows[0];
 
-    // Compare password
     const passwordMatches = await bcrypt.compare(
       password,
       user.password_hash
@@ -177,7 +205,6 @@ app.post("/api/auth/login", async (req, res) => {
       });
     }
 
-    // Create JWT
     const token = jwt.sign(
       {
         userId: user.id,
@@ -196,7 +223,7 @@ app.post("/api/auth/login", async (req, res) => {
         id: user.id,
         name: user.name,
         email: user.email,
-        created_at: user.created_at,
+        createdAt: user.created_at,
       },
     });
 
@@ -210,21 +237,33 @@ app.post("/api/auth/login", async (req, res) => {
 });
 
 
-// ================================
+// ==================================================
 // AI ANALYSIS
-// ================================
+// ==================================================
 
-app.post("/api/analyze", async (req, res) => {
-  try {
-    const { problem, solution, language } = req.body;
+app.post(
+  "/api/analyze",
+  authenticateToken,
+  async (req, res) => {
+    try {
+      const {
+        problem,
+        solution,
+        language,
+      } = req.body;
 
-    if (!problem || !solution || !language) {
-      return res.status(400).json({
-        error: "Problem, solution and language are required.",
-      });
-    }
+      if (
+        !problem?.trim() ||
+        !solution?.trim() ||
+        !language
+      ) {
+        return res.status(400).json({
+          error:
+            "Problem, solution and language are required.",
+        });
+      }
 
-    const prompt = `
+      const prompt = `
 You are the AI reasoning engine for ThinkFlow AI.
 
 Analyze the submitted programming problem and the user's solution.
@@ -271,48 +310,266 @@ Return ONLY valid JSON in exactly this structure:
 Metrics must be integers from 0 to 100.
 `;
 
-    const response = await openai.responses.create({
-      model: process.env.OPENAI_MODEL || "gpt-5.6-luna",
-      input: prompt,
-    });
+      const response = await openai.responses.create({
+        model:
+          process.env.OPENAI_MODEL ||
+          "gpt-5.6-luna",
+        input: prompt,
+      });
 
-    const text = response.output_text;
+      const text = response.output_text;
 
-    let analysis;
+      let analysis;
 
-    try {
-      analysis = JSON.parse(text);
-    } catch {
-      return res.status(500).json({
-        error: "AI returned an invalid response.",
-        raw: text,
+      try {
+        analysis = JSON.parse(text);
+      } catch (error) {
+        console.error(
+          "Invalid AI JSON:",
+          text
+        );
+
+        return res.status(500).json({
+          error:
+            "AI returned an invalid response.",
+        });
+      }
+
+      // ==================================================
+      // SAVE ANALYSIS TO POSTGRESQL
+      // ==================================================
+
+      const result = await pool.query(
+        `
+        INSERT INTO analyses (
+          user_id,
+          problem,
+          solution,
+          language,
+          thinking_pattern,
+          summary,
+          observation,
+          metrics,
+          strengths,
+          improvements
+        )
+        VALUES (
+          $1,
+          $2,
+          $3,
+          $4,
+          $5,
+          $6,
+          $7,
+          $8,
+          $9,
+          $10
+        )
+        RETURNING id, created_at
+        `,
+        [
+          req.user.userId,
+          problem.trim(),
+          solution,
+          language,
+          analysis.thinkingPattern || "",
+          analysis.summary || "",
+          analysis.observation || "",
+          JSON.stringify(
+            analysis.metrics || {}
+          ),
+          JSON.stringify(
+            analysis.strengths || []
+          ),
+          JSON.stringify(
+            analysis.improvements || []
+          ),
+        ]
+      );
+
+      const savedAnalysis = result.rows[0];
+
+      // ==================================================
+      // SEND RESULT TO FRONTEND
+      // ==================================================
+
+      res.json({
+        id: savedAnalysis.id,
+
+        thinkingPattern:
+          analysis.thinkingPattern || "",
+
+        summary:
+          analysis.summary || "",
+
+        observation:
+          analysis.observation || "",
+
+        metrics:
+          analysis.metrics || {},
+
+        strengths:
+          analysis.strengths || [],
+
+        improvements:
+          analysis.improvements || [],
+
+        problem: problem.trim(),
+
+        solution,
+
+        language,
+
+        createdAt:
+          savedAnalysis.created_at,
+      });
+
+    } catch (error) {
+      console.error(
+        "AI analysis error:",
+        error
+      );
+
+      res.status(500).json({
+        error:
+          "Failed to analyze the solution.",
       });
     }
-
-    res.json(analysis);
-
-  } catch (error) {
-    console.error("AI analysis error:", error);
-
-    res.status(500).json({
-      error: "Failed to analyze the solution.",
-    });
   }
-});
+);
 
 
-// ================================
+// ==================================================
+// GET ANALYSIS HISTORY
+// ==================================================
+
+app.get(
+  "/api/analyses",
+  authenticateToken,
+  async (req, res) => {
+    try {
+      const result = await pool.query(
+        `
+        SELECT
+          id,
+          problem,
+          solution,
+          language,
+          thinking_pattern,
+          summary,
+          observation,
+          metrics,
+          strengths,
+          improvements,
+          created_at
+        FROM analyses
+        WHERE user_id = $1
+        ORDER BY created_at DESC
+        `,
+        [req.user.userId]
+      );
+
+      const history = result.rows.map(
+        (item) => ({
+          id: item.id,
+
+          problem: item.problem,
+
+          solution: item.solution,
+
+          language: item.language,
+
+          thinkingPattern:
+            item.thinking_pattern,
+
+          summary:
+            item.summary,
+
+          observation:
+            item.observation,
+
+          metrics:
+            item.metrics || {},
+
+          strengths:
+            item.strengths || [],
+
+          improvements:
+            item.improvements || [],
+
+          createdAt:
+            item.created_at,
+        })
+      );
+
+      res.json(history);
+
+    } catch (error) {
+      console.error(
+        "History error:",
+        error
+      );
+
+      res.status(500).json({
+        error:
+          "Failed to load analysis history.",
+      });
+    }
+  }
+);
+
+
+// ==================================================
+// CLEAR ANALYSIS HISTORY
+// ==================================================
+
+app.delete(
+  "/api/analyses",
+  authenticateToken,
+  async (req, res) => {
+    try {
+      await pool.query(
+        `
+        DELETE FROM analyses
+        WHERE user_id = $1
+        `,
+        [req.user.userId]
+      );
+
+      res.json({
+        message:
+          "Analysis history cleared successfully.",
+      });
+
+    } catch (error) {
+      console.error(
+        "Clear history error:",
+        error
+      );
+
+      res.status(500).json({
+        error:
+          "Failed to clear history.",
+      });
+    }
+  }
+);
+
+
+// ==================================================
 // START SERVER
-// ================================
+// ==================================================
 
-const startServer = async () => {
-  await initializeDatabase();
-
-  app.listen(PORT, () => {
-    console.log(
-      `ThinkFlow AI server running on http://localhost:${PORT}`
-    );
-  });
+const startServer = () => {
+  app.listen(
+    PORT,
+    "0.0.0.0",
+    () => {
+      console.log(
+        `ThinkFlow AI server running on http://localhost:${PORT}`
+      );
+    }
+  );
 };
 
 startServer();
