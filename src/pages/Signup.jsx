@@ -13,6 +13,7 @@ import {
   User,
   AlertCircle,
 } from "lucide-react";
+import Toast from "../components/Common/Toast";
 
 function Signup() {
   const navigate = useNavigate();
@@ -28,6 +29,7 @@ function Signup() {
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [toast, setToast] = useState(null);
 
   useEffect(() => {
     localStorage.setItem(
@@ -119,7 +121,8 @@ function Signup() {
         );
       }
 
-      navigate("/dashboard");
+      setToast({ type: "success", title: "Account created", message: "Welcome to ThinkFlow!" });
+      setTimeout(() => navigate("/dashboard"), 1200);
     } catch (err) {
       console.error("Signup error:", err);
 
@@ -138,6 +141,16 @@ function Signup() {
         darkMode ? "dark-mode" : "light-mode"
       }`}
     >
+      {toast && (
+        <Toast
+          type={toast.type}
+          title={toast.title}
+          message={toast.message}
+          darkMode={darkMode}
+          onClose={() => setToast(null)}
+        />
+      )}
+
       {/* BACKGROUND */}
 
       <div className="auth-background">

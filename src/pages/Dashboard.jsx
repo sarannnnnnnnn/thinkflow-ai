@@ -132,14 +132,11 @@ function Dashboard() {
         setHistory(databaseHistory);
 
         /*
-         * Show the latest analysis when dashboard opens.
-         */
-        if (databaseHistory.length > 0) {
-          setAnalysis(databaseHistory[0]);
-        }
-
-        /*
          * Keep localStorage as a lightweight cache.
+         * NOTE: We intentionally do NOT call setAnalysis here.
+         * On mount/refresh the Insights panel must start empty.
+         * The user must either run a new analysis or click a
+         * history item to populate it.
          */
         localStorage.setItem(
           "thinkflow_history",
@@ -160,10 +157,7 @@ function Dashboard() {
 
             if (Array.isArray(parsed)) {
               setHistory(parsed);
-
-              if (parsed.length > 0) {
-                setAnalysis(parsed[0]);
-              }
+              // Do NOT auto-load analysis from cache on mount.
             }
           }
         } catch {
@@ -219,15 +213,17 @@ function Dashboard() {
       return updatedHistory;
     });
 
-    setActiveSection("analyze");
+    setActiveSection("ai-analysis");
 
     setTimeout(() => {
-      document
-        .getElementById("ai-analysis")
-        ?.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
+      const target = document.getElementById("ai-analysis");
+      if (!target) return;
+      const navbarHeight = 108;
+      const top =
+        target.getBoundingClientRect().top +
+        window.scrollY -
+        navbarHeight;
+      window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
     }, 200);
   };
 
@@ -238,15 +234,17 @@ function Dashboard() {
   const loadAnalysis = (item) => {
     setSelectedHistory(item);
     setAnalysis(item);
-    setActiveSection("analyze");
+    setActiveSection("ai-analysis");
 
     setTimeout(() => {
-      document
-        .getElementById("ai-analysis")
-        ?.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
+      const target = document.getElementById("ai-analysis");
+      if (!target) return;
+      const navbarHeight = 108;
+      const top =
+        target.getBoundingClientRect().top +
+        window.scrollY -
+        navbarHeight;
+      window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
     }, 100);
   };
 
@@ -1323,15 +1321,40 @@ function Dashboard() {
           width: 100% !important;
           min-width: 0 !important;
           margin: 0 !important;
-          padding: 124px 42px 70px !important;
+          padding: 124px 0 70px !important;
           box-sizing: border-box !important;
           background: transparent !important;
         }
 
+        /* All direct children share the same centered container */
         .dashboard-page .dashboard-main > * {
-          max-width: 1180px !important;
+          width: 100% !important;
+          max-width: 1400px !important;
           margin-left: auto !important;
           margin-right: auto !important;
+          padding-left: 36px !important;
+          padding-right: 36px !important;
+          box-sizing: border-box !important;
+        }
+
+        /* Override App.css simple-dashboard-header max-width constraint */
+        .dashboard-page .simple-dashboard-header {
+          max-width: 1400px !important;
+          margin-left: auto !important;
+          margin-right: auto !important;
+          padding-left: 36px !important;
+          padding-right: 36px !important;
+          box-sizing: border-box !important;
+        }
+
+        /* Override App.css history-section own max-width/margin */
+        .dashboard-page .history-section {
+          max-width: 1400px !important;
+          margin-left: auto !important;
+          margin-right: auto !important;
+          padding-left: 36px !important;
+          padding-right: 36px !important;
+          box-sizing: border-box !important;
         }
 
         #dashboard,
@@ -1358,7 +1381,9 @@ function Dashboard() {
             min-width: 88px !important;
             padding: 0 12px !important;
           }
-          .dashboard-page .dashboard-main {
+          .dashboard-page .dashboard-main > *,
+          .dashboard-page .simple-dashboard-header,
+          .dashboard-page .history-section {
             padding-left: 24px !important;
             padding-right: 24px !important;
           }
@@ -1423,6 +1448,15 @@ function Dashboard() {
           }
           .dashboard-page .dashboard-main {
             padding-top: 122px !important;
+          }
+        }
+
+        @media (max-width: 700px) {
+          .dashboard-page .dashboard-main > *,
+          .dashboard-page .simple-dashboard-header,
+          .dashboard-page .history-section {
+            padding-left: 16px !important;
+            padding-right: 16px !important;
           }
         }
 
@@ -1832,7 +1866,169 @@ function Dashboard() {
   background: #eef2ff !important;
 }
 
+
+        /* ==================================================
+           LOGOUT MODAL
+           ================================================== */
+
+        .logout-overlay {
+          position: fixed !important;
+          inset: 0 !important;
+          z-index: 99998 !important;
+          display: flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          background: rgba(0, 0, 0, 0.55) !important;
+          backdrop-filter: blur(4px) !important;
+          -webkit-backdrop-filter: blur(4px) !important;
+          padding: 20px !important;
+          box-sizing: border-box !important;
+          animation: tfOverlayIn 0.18s ease !important;
+        }
+
+        @keyframes tfOverlayIn {
+          from { opacity: 0; }
+          to   { opacity: 1; }
+        }
+
+        .logout-popup {
+          position: relative !important;
+          width: 100% !important;
+          max-width: 400px !important;
+          padding: 32px 28px 26px !important;
+          border-radius: 20px !important;
+          box-sizing: border-box !important;
+          text-align: center !important;
+          animation: tfModalIn 0.22s cubic-bezier(0.34,1.56,0.64,1) !important;
+          font-family: Poppins, -apple-system, BlinkMacSystemFont, sans-serif !important;
+          /* default (dark) background — overridden by .dark-mode/.light-mode below */
+          background: #0d1424 !important;
+          border: 1px solid #202743 !important;
+          box-shadow: 0 24px 60px rgba(0,0,0,0.55) !important;
+          color: #f1f5f9 !important;
+        }
+
+        @keyframes tfModalIn {
+          from { opacity: 0; transform: scale(0.92) translateY(10px); }
+          to   { opacity: 1; transform: scale(1)    translateY(0);    }
+        }
+
+        /* Dark mode card */
+        .dark-mode .logout-popup {
+          background: #0d1424 !important;
+          border: 1px solid #202743 !important;
+          box-shadow: 0 24px 60px rgba(0,0,0,0.55) !important;
+          color: #f1f5f9 !important;
+        }
+
+        /* Light mode card */
+        .light-mode .logout-popup {
+          background: #ffffff !important;
+          border: 1px solid #e5e7eb !important;
+          box-shadow: 0 24px 60px rgba(15,23,42,0.14) !important;
+          color: #0f172a !important;
+        }
+
+        .logout-popup-icon {
+          display: flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          width: 48px !important;
+          height: 48px !important;
+          border-radius: 14px !important;
+          margin: 0 auto 18px !important;
+          color: #818cf8 !important;
+        }
+
+        .dark-mode .logout-popup-icon {
+          background: #1a2140 !important;
+          border: 1px solid #252d50 !important;
+        }
+
+        .light-mode .logout-popup-icon {
+          background: #eef2ff !important;
+          border: 1px solid #e0e7ff !important;
+        }
+
+        .logout-popup h3 {
+          margin: 0 0 10px !important;
+          font-size: 18px !important;
+          font-weight: 600 !important;
+          letter-spacing: -0.02em !important;
+        }
+
+        .dark-mode .logout-popup h3 {
+          color: #f1f5f9 !important;
+        }
+
+        .light-mode .logout-popup h3 {
+          color: #0f172a !important;
+        }
+
+        .logout-popup p {
+          margin: 0 0 26px !important;
+          font-size: 13.5px !important;
+          line-height: 1.6 !important;
+        }
+
+        .dark-mode .logout-popup p {
+          color: #94a3b8 !important;
+        }
+
+        .light-mode .logout-popup p {
+          color: #64748b !important;
+        }
+
+        .logout-popup-actions {
+          display: flex !important;
+          gap: 10px !important;
+          justify-content: center !important;
+        }
+
+        .logout-cancel-button,
+        .logout-confirm-button {
+          flex: 1 !important;
+          height: 42px !important;
+          border-radius: 10px !important;
+          border: none !important;
+          font-size: 13.5px !important;
+          font-weight: 600 !important;
+          cursor: pointer !important;
+          font-family: inherit !important;
+          transition: opacity 0.15s ease, transform 0.15s ease !important;
+        }
+
+        .logout-cancel-button:hover,
+        .logout-confirm-button:hover {
+          opacity: 0.88 !important;
+          transform: translateY(-1px) !important;
+        }
+
+        .logout-cancel-button:active,
+        .logout-confirm-button:active {
+          transform: translateY(0) !important;
+        }
+
+        .dark-mode .logout-cancel-button {
+          background: #1e2740 !important;
+          color: #94a3b8 !important;
+          border: 1px solid #252d50 !important;
+        }
+
+        .light-mode .logout-cancel-button {
+          background: #f1f5f9 !important;
+          color: #475569 !important;
+          border: 1px solid #e2e8f0 !important;
+        }
+
+        .logout-confirm-button {
+          background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;
+          color: #ffffff !important;
+          box-shadow: 0 4px 14px rgba(99,102,241,0.32) !important;
+        }
+
       `}</style>
+
 
       {/* ==================================================
           DASHBOARD
@@ -2534,7 +2730,7 @@ function Dashboard() {
       {showLogoutPopup && (
 
         <div
-          className="logout-overlay"
+          className={`logout-overlay ${darkMode ? "dark-mode" : "light-mode"}`}
           onClick={closeLogoutPopup}
         >
 

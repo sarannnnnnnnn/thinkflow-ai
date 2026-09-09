@@ -319,10 +319,19 @@ Metrics must be integers from 0 to 100.
 
       const text = response.output_text;
 
+      // Strip markdown code fences that models sometimes add
+      // even when instructed to return plain JSON.
+      // Handles: ```json ... ```, ``` ... ```, or plain JSON.
+      const stripped = text
+        .trim()
+        .replace(/^```(?:json)?\s*/i, "")
+        .replace(/\s*```$/, "")
+        .trim();
+
       let analysis;
 
       try {
-        analysis = JSON.parse(text);
+        analysis = JSON.parse(stripped);
       } catch (error) {
         console.error(
           "Invalid AI JSON:",

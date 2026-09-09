@@ -12,6 +12,7 @@ import {
   Mail,
   AlertCircle,
 } from "lucide-react";
+import Toast from "../components/Common/Toast";
 
 function Login() {
   const navigate = useNavigate();
@@ -25,6 +26,7 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [toast, setToast] = useState(null);
 
   useEffect(() => {
     localStorage.setItem(
@@ -115,7 +117,8 @@ function Login() {
         );
       }
 
-      navigate("/dashboard");
+      setToast({ type: "success", title: "Login successful", message: "Welcome back to ThinkFlow." });
+      setTimeout(() => navigate("/dashboard"), 1200);
     } catch (err) {
       console.error("Login error:", err);
 
@@ -140,6 +143,16 @@ function Login() {
         darkMode ? "dark-mode" : "light-mode"
       }`}
     >
+      {toast && (
+        <Toast
+          type={toast.type}
+          title={toast.title}
+          message={toast.message}
+          darkMode={darkMode}
+          onClose={() => setToast(null)}
+        />
+      )}
+
       <div className="auth-background">
         <div className="auth-glow auth-glow-one" />
         <div className="auth-glow auth-glow-two" />

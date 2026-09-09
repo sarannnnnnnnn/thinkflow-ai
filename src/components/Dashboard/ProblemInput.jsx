@@ -158,7 +158,7 @@ function ProblemInput({ onAnalysis }) {
           type="text"
           value={problem}
           onChange={(event) => setProblem(event.target.value)}
-          placeholder="e.g. Find the two numbers that add up to a target..."
+          placeholder="Enter your question or problem here..."
         />
       </div>
 
@@ -251,8 +251,29 @@ function ProblemInput({ onAnalysis }) {
               suggestOnTriggerCharacters: true,
             }}
           />
-        </div>
+        {solution === "" && (
+          <div
+            style={{
+              position: "absolute",
+              top: "14px",
+              left: "64px",
+              pointerEvents: "none",
+              userSelect: "none",
+              color: isDarkMode
+                ? "rgba(148,163,184,0.35)"
+                : "rgba(100,116,139,0.45)",
+              fontFamily:
+                "JetBrains Mono, Consolas, Monaco, monospace",
+              fontSize: "14px",
+              lineHeight: "22px",
+              zIndex: 1,
+            }}
+          >
+            Write your code here...
+          </div>
+        )}
       </div>
+    </div>
 
       {error && <div className="analysis-error">{error}</div>}
 
