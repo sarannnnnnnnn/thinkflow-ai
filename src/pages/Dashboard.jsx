@@ -1460,25 +1460,126 @@ function Dashboard() {
           }
         }
 
-        @media (max-width: 560px) {
+        @media (max-width: 600px) {
+          /* ── MOBILE NAVBAR: 2-row flex-wrap layout ─────────────────
+             Row 1: Logo (left)  +  Actions (right)
+             Row 2: Dashboard | Analyze | Insights | History (full width)
+             ───────────────────────────────────────────────────────── */
+
           .dashboard-page .dashboard-top-navbar {
-            grid-template-columns: auto 1fr auto !important;
-            gap: 8px !important;
+            top: 10px !important;
+            left: 10px !important;
+            right: 10px !important;
+            height: auto !important;
+            min-height: unset !important;
+            /* flex-wrap so nav drops to row 2 */
+            display: flex !important;
+            flex-direction: row !important;
+            flex-wrap: wrap !important;
+            align-items: center !important;
+            gap: 0 !important;
+            padding: 10px 14px !important;
+            border-radius: 18px !important;
           }
+
+          /* Logo — row 1, left */
+          .dashboard-page .dashboard-top-navbar .dashboard-logo {
+            order: 1 !important;
+            flex: 1 1 auto !important;
+            font-size: 16px !important;
+            gap: 8px !important;
+            display: inline-flex !important;
+          }
+
+          /* Show brand text */
           .dashboard-page .dashboard-top-navbar .dashboard-logo > span {
+            display: inline !important;
+          }
+
+          .dashboard-page .dashboard-logo-mark {
+            width: 32px !important;
+            height: 32px !important;
+            min-width: 32px !important;
+            border-radius: 8px !important;
+          }
+
+          /* Actions — row 1, right */
+          .dashboard-page .dashboard-top-actions {
+            order: 2 !important;
+            flex: 0 0 auto !important;
+            gap: 6px !important;
+          }
+
+          .dashboard-page .dashboard-top-actions .thinkflow-theme-button {
+            width: 34px !important;
+            min-width: 34px !important;
+            height: 34px !important;
+            min-height: 34px !important;
+          }
+
+          .dashboard-page .dashboard-top-actions .dashboard-logout-button {
+            width: 34px !important;
+            min-width: 34px !important;
+            height: 34px !important;
+            min-height: 34px !important;
+            padding: 0 !important;
+          }
+
+          .dashboard-page .dashboard-top-actions .dashboard-logout-button span {
             display: none !important;
           }
+
+          .dashboard-page .dashboard-top-actions .dashboard-logout-button svg {
+            display: block !important;
+          }
+
+          /* Nav — row 2, full width */
           .dashboard-page .dashboard-top-nav {
-            justify-content: center !important;
+            order: 3 !important;
+            width: 100% !important;
+            flex: 0 0 100% !important;
+            height: auto !important;
+            min-height: unset !important;
+            display: flex !important;
+            flex-direction: row !important;
+            flex-wrap: nowrap !important;
+            align-items: center !important;
+            justify-content: stretch !important;
+            gap: 4px !important;
+            margin-top: 8px !important;
+            padding-top: 8px !important;
+            overflow: visible !important;
+            border-top: 1px solid var(--tf-nav-border) !important;
           }
+
           .dashboard-page .dashboard-top-nav-item {
-            min-width: 74px !important;
-            padding: 0 8px !important;
+            flex: 1 1 0 !important;
+            min-width: 0 !important;
+            width: auto !important;
+            height: 34px !important;
+            min-height: 34px !important;
+            padding: 0 4px !important;
+            font-size: 11.5px !important;
+            gap: 4px !important;
+            justify-content: center !important;
+            white-space: nowrap !important;
+            overflow: hidden !important;
+            border-radius: 10px !important;
           }
-          .dashboard-page .dashboard-top-nav-item span {
-            font-size: 12px !important;
+
+          .dashboard-page .dashboard-top-nav-item svg {
+            width: 13px !important;
+            height: 13px !important;
+            flex-shrink: 0 !important;
+          }
+
+          /* Adjust main content padding for 2-row navbar height */
+          .dashboard-page .dashboard-main {
+            padding-top: 120px !important;
           }
         }
+
+
 
         /* ==================================================
            DASHBOARD DARK/LIGHT THEME FOR CHILD COMPONENTS
