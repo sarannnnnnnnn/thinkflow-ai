@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { CheckCircle, AlertCircle, X } from "lucide-react";
 
 /*
@@ -63,10 +63,10 @@ function Toast({
         boxShadow: darkMode
           ? "0 8px 32px rgba(0,0,0,0.45)"
           : "0 8px 32px rgba(15,23,42,0.14)",
-        background: darkMode ? "#111827" : "#ffffff",
+        background: darkMode ? "#0E0F0C" : "#ffffff",
         border: darkMode
-          ? `1px solid ${isSuccess ? "#312e81" : "#3b1919"}`
-          : `1px solid ${isSuccess ? "#e0e7ff" : "#fee2e2"}`,
+          ? `1px solid ${isSuccess ? "#163300" : "#3b1919"}`
+          : `1px solid ${isSuccess ? "#E2F6D5" : "#fee2e2"}`,
         opacity: visible ? 1 : 0,
         transform: visible ? "translateY(0)" : "translateY(-12px)",
         transition: "opacity 0.28s ease, transform 0.28s ease",
@@ -80,7 +80,7 @@ function Toast({
         style={{
           flexShrink: 0,
           marginTop: "1px",
-          color: isSuccess ? "#818cf8" : "#f87171",
+          color: isSuccess ? "#9FE870" : "#f87171",
         }}
       >
         {isSuccess ? (
@@ -97,7 +97,7 @@ function Toast({
             style={{
               fontSize: "13px",
               fontWeight: 600,
-              color: darkMode ? "#f1f5f9" : "#0f172a",
+              color: darkMode ? "#F4F6F1" : "#0E0F0C",
               marginBottom: message ? "3px" : 0,
               lineHeight: 1.3,
             }}
@@ -109,7 +109,7 @@ function Toast({
           <div
             style={{
               fontSize: "12px",
-              color: darkMode ? "#94a3b8" : "#64748b",
+              color: darkMode ? "#454745" : "#454745",
               lineHeight: 1.45,
             }}
           >
@@ -128,7 +128,7 @@ function Toast({
           border: "none",
           padding: "2px",
           cursor: "pointer",
-          color: darkMode ? "#475569" : "#94a3b8",
+          color: darkMode ? "#454745" : "#454745",
           display: "flex",
           alignItems: "center",
           borderRadius: "6px",

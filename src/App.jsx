@@ -34,12 +34,30 @@ import "./App.css";
    CONTACT
    ========================================================= */
 
-const contact = {
-  github: "https://github.com/sarannnnnnnnn/",
-  linkedin: "https://www.linkedin.com/in/sarannnn",
-  email: "mailto:saran16062007@gmail.com",
-  phone: "tel:+919597428933",
-};
+const contributors = [
+  {
+    name: "Saran",
+    github: "https://github.com/sarannnnnnnnn/",
+    githubHandle: "sarannnnnnnnn",
+    linkedin: "https://www.linkedin.com/in/sarannnn",
+    linkedinHandle: "sarannnn",
+    email: "mailto:saran16062007@gmail.com",
+    emailHandle: "saran16062007@gmail.com",
+    phone: "tel:+919597428933",
+    phoneHandle: "+91 95974 28933",
+  },
+  {
+    name: "Naveen Raj",
+    github: "https://github.com/naveenrajvnr28-gif",
+    githubHandle: "naveenrajvnr28-gif",
+    linkedin: "https://www.linkedin.com/in/naveen-raj-1b7a35348",
+    linkedinHandle: "naveen-raj",
+    email: "mailto:naveenrajvnr28@gmail.com",
+    emailHandle: "naveenrajvnr28@gmail.com",
+    phone: "tel:+917010926810",
+    phoneHandle: "+91 70109 26810",
+  },
+];
 
 /* =========================================================
    FEATURES
@@ -562,108 +580,99 @@ function Home() {
                 <div />
               </div>
 
-              <div className="contact-grid">
-                <a
-                  href={contact.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="contact-item"
-                >
-                  <div className="contact-symbol github-symbol">
-                    <svg viewBox="0 0 24 24">
-                      <path
-                        fill="currentColor"
-                        d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56v-2.1c-3.2.7-3.88-1.54-3.88-1.54-.53-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.75 1.18 1.75 1.18 1.02 1.75 2.67 1.25 3.32.96.1-.74.4-1.25.73-1.54-2.55-.29-5.23-1.28-5.23-5.68 0-1.25.45-2.27 1.18-3.07-.12-.29-.51-1.45.11-3.03 0 0 .96-.31 3.15 1.17a10.9 10.9 0 0 1 5.74 0c2.19-1.48 3.15-1.17 3.15-1.17.62 1.58.23 2.74.11 3.03.73.8 1.18 1.82 1.18 3.07 0 4.41-2.69 5.38-5.25 5.67.41.35.78 1.04.78 2.1v3.11c0 .31.21.67.8.56A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"
-                      />
-                    </svg>
+              <div className="contributors-grid">
+                {contributors.map((contributor) => (
+                  <div key={contributor.name} className="contributor-card">
+                    <div className="contributor-name">
+                      <span>{contributor.name}</span>
+                    </div>
+
+                    <div className="contact-grid">
+                      {/* GitHub — only show if contributor has one */}
+                      {contributor.github && (
+                        <a
+                          href={contributor.github}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="contact-item"
+                        >
+                          <div className="contact-symbol github-symbol">
+                            <svg viewBox="0 0 24 24">
+                              <path
+                                fill="currentColor"
+                                d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56v-2.1c-3.2.7-3.88-1.54-3.88-1.54-.53-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.75 1.18 1.75 1.18 1.02 1.75 2.67 1.25 3.32.96.1-.74.4-1.25.73-1.54-2.55-.29-5.23-1.28-5.23-5.68 0-1.25.45-2.27 1.18-3.07-.12-.29-.51-1.45.11-3.03 0 0 .96-.31 3.15 1.17a10.9 10.9 0 0 1 5.74 0c2.19-1.48 3.15-1.17 3.15-1.17.62 1.58.23 2.74.11 3.03.73.8 1.18 1.82 1.18 3.07 0 4.41-2.69 5.38-5.25 5.67.41.35.78 1.04.78 2.1v3.11c0 .31.21.67.8.56A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"
+                              />
+                            </svg>
+                          </div>
+                          <div className="contact-text">
+                            <small>GITHUB</small>
+                            <strong>{contributor.githubHandle}</strong>
+                          </div>
+                          <span className="contact-arrow">↗</span>
+                        </a>
+                      )}
+
+                      {/* LinkedIn */}
+                      <a
+                        href={contributor.linkedin}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="contact-item"
+                      >
+                        <div className="contact-symbol linkedin-symbol">
+                          <span>in</span>
+                        </div>
+                        <div className="contact-text">
+                          <small>LINKEDIN</small>
+                          <strong>{contributor.linkedinHandle}</strong>
+                        </div>
+                        <span className="contact-arrow">↗</span>
+                      </a>
+
+                      {/* Email */}
+                      <a
+                        href={contributor.email}
+                        className="contact-item"
+                      >
+                        <div className="contact-symbol">
+                          <svg viewBox="0 0 24 24">
+                            <rect x="3" y="5" width="18" height="14" rx="2" fill="none" stroke="currentColor" strokeWidth="1.7" />
+                            <path d="M4 7l8 6 8-6" fill="none" stroke="currentColor" strokeWidth="1.7" />
+                          </svg>
+                        </div>
+                        <div className="contact-text">
+                          <small>EMAIL</small>
+                          <strong>{contributor.emailHandle}</strong>
+                        </div>
+                        <span className="contact-arrow">↗</span>
+                      </a>
+
+                      {/* Phone */}
+                      <a
+                        href={contributor.phone}
+                        className="contact-item"
+                      >
+                        <div className="contact-symbol">
+                          <svg viewBox="0 0 24 24">
+                            <path
+                              d="M7.5 3.5l2.1-.5c.6-.1 1.1.2 1.3.8l1 2.6c.2.5 0 1-.4 1.3L10 9c1 2.1 2.7 3.8 4.8 4.8l1.3-1.5c.3-.4.8-.5 1.3-.3l2.6 1c.6.2.9.7.8 1.3l-.5 2.1c-.1.7-.7 1.1-1.4 1.1C11.2 17.5 6.5 12.8 6.5 5c0-.7.4-1.3 1-1.5Z"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="1.6"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
+                        </div>
+                        <div className="contact-text">
+                          <small>PHONE</small>
+                          <strong>{contributor.phoneHandle}</strong>
+                        </div>
+                        <span className="contact-arrow">↗</span>
+                      </a>
+                    </div>
                   </div>
-
-                  <div className="contact-text">
-                    <small>GITHUB</small>
-                    <strong>sarannnnnnnnn</strong>
-                  </div>
-
-                  <span className="contact-arrow">↗</span>
-                </a>
-
-                <a
-                  href={contact.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="contact-item"
-                >
-                  <div className="contact-symbol linkedin-symbol">
-                    <span>in</span>
-                  </div>
-
-                  <div className="contact-text">
-                    <small>LINKEDIN</small>
-                    <strong>sarannnn</strong>
-                  </div>
-
-                  <span className="contact-arrow">↗</span>
-                </a>
-
-                <a
-                  href={contact.email}
-                  className="contact-item"
-                >
-                  <div className="contact-symbol">
-                    <svg viewBox="0 0 24 24">
-                      <rect
-                        x="3"
-                        y="5"
-                        width="18"
-                        height="14"
-                        rx="2"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1.7"
-                      />
-
-                      <path
-                        d="M4 7l8 6 8-6"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1.7"
-                      />
-                    </svg>
-                  </div>
-
-                  <div className="contact-text">
-                    <small>EMAIL</small>
-                    <strong>
-                      saran16062007@gmail.com
-                    </strong>
-                  </div>
-
-                  <span className="contact-arrow">↗</span>
-                </a>
-
-                <a
-                  href={contact.phone}
-                  className="contact-item"
-                >
-                  <div className="contact-symbol">
-                    <svg viewBox="0 0 24 24">
-                      <path
-                        d="M7.5 3.5l2.1-.5c.6-.1 1.1.2 1.3.8l1 2.6c.2.5 0 1-.4 1.3L10 9c1 2.1 2.7 3.8 4.8 4.8l1.3-1.5c.3-.4.8-.5 1.3-.3l2.6 1c.6.2.9.7.8 1.3l-.5 2.1c-.1.7-.7 1.1-1.4 1.1C11.2 17.5 6.5 12.8 6.5 5c0-.7.4-1.3 1-1.5Z"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1.6"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </div>
-
-                  <div className="contact-text">
-                    <small>PHONE</small>
-                    <strong>+91 95974 28933</strong>
-                  </div>
-
-                  <span className="contact-arrow">↗</span>
-                </a>
+                ))}
               </div>
             </div>
 
@@ -681,7 +690,7 @@ function Home() {
       </main>
 
       <footer className="simple-footer">
-        <span>Designed &amp; Developed by Saran</span>
+        <span>Designed &amp; Developed by Saran &amp; Naveen Raj</span>
 
         <span className="footer-dot">•</span>
 

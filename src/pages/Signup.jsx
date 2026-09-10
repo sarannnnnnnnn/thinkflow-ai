@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   ArrowLeft,
@@ -109,20 +109,18 @@ function Signup() {
         );
       }
 
-      sessionStorage.setItem(
-        "thinkflow_token",
-        data.token
-      );
+      // Do NOT store the token here â€” user must log in manually.
+      // Remove any stale session data that might have been set.
+      sessionStorage.removeItem("thinkflow_token");
+      sessionStorage.removeItem("thinkflow_user");
 
-      if (data.user) {
-        sessionStorage.setItem(
-          "thinkflow_user",
-          JSON.stringify(data.user)
-        );
-      }
-
-      setToast({ type: "success", title: "Account created", message: "Welcome to ThinkFlow!" });
-      setTimeout(() => navigate("/dashboard"), 1200);
+      setToast({
+        type: "success",
+        title: "Account created successfully!",
+        message: "Please log in to continue.",
+        duration: 2800,
+      });
+      setTimeout(() => navigate("/login"), 3000);
     } catch (err) {
       console.error("Signup error:", err);
 
@@ -147,6 +145,7 @@ function Signup() {
           title={toast.title}
           message={toast.message}
           darkMode={darkMode}
+          duration={toast.duration}
           onClose={() => setToast(null)}
         />
       )}
@@ -401,7 +400,7 @@ function Signup() {
 
           <div className="auth-footer">
             <span>THINKFLOW AI</span>
-            <span>•</span>
+            <span>â€¢</span>
             <span>
               UNDERSTAND THE PROCESS
             </span>

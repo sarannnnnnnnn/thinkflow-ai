@@ -679,7 +679,7 @@ function Dashboard() {
 
         .thinkflow-insights-header p {
           margin: 6px 0 0;
-          color: #8993ad;
+          color: #454745;
           font-size: 13px;
         }
 
@@ -689,15 +689,15 @@ function Dashboard() {
           gap: 8px;
           padding: 8px 12px;
           border-radius: 9px;
-          border: 1px solid #252b46;
-          color: #94a3b8;
+          border: 1px solid rgba(159,232,112,0.12);
+          color: #454745;
           font-size: 12px;
           white-space: nowrap;
         }
 
         .light-mode .thinkflow-insights-count {
-          border-color: #e5e7eb;
-          color: #6b7280;
+          border-color: #D9DED5;
+          color: #454745;
           background: #ffffff;
         }
 
@@ -710,15 +710,15 @@ function Dashboard() {
         .thinkflow-overview-card {
           min-height: 145px;
           padding: 20px;
-          border: 1px solid #202743;
+          border: 1px solid #163300;
           border-radius: 15px;
-          background: #0c1022;
+          background: #0E0F0C;
           box-sizing: border-box;
         }
 
         .light-mode .thinkflow-overview-card {
           background: #ffffff;
-          border-color: #e5e7eb;
+          border-color: #D9DED5;
           box-shadow:
             0 10px 30px rgba(15, 23, 42, 0.04);
         }
@@ -739,17 +739,17 @@ function Dashboard() {
           display: flex;
           align-items: center;
           gap: 9px;
-          color: #94a3b8;
+          color: #454745;
           font-size: 12px;
           font-weight: 500;
         }
 
         .light-mode .thinkflow-card-title {
-          color: #6b7280;
+          color: #454745;
         }
 
         .thinkflow-card-title svg {
-          color: #818cf8;
+          color: #9FE870;
         }
 
         .thinkflow-overall-number {
@@ -762,13 +762,13 @@ function Dashboard() {
 
         .thinkflow-overall-number span {
           font-size: 20px;
-          color: #818cf8;
+          color: #9FE870;
           margin-left: 2px;
         }
 
         .thinkflow-overall-label {
           margin-top: 10px;
-          color: #64748b;
+          color: #454745;
           font-size: 11px;
         }
 
@@ -777,11 +777,11 @@ function Dashboard() {
           margin-top: 22px;
           border-radius: 99px;
           overflow: hidden;
-          background: #1a2140;
+          background: #163300;
         }
 
         .light-mode .thinkflow-overall-bar {
-          background: #eef0f6;
+          background: #F4F6F1;
         }
 
         .thinkflow-overall-bar div {
@@ -789,8 +789,8 @@ function Dashboard() {
           border-radius: inherit;
           background: linear-gradient(
             90deg,
-            #6366f1,
-            #a855f7
+            #9FE870,
+            #9FE870
           );
         }
 
@@ -799,7 +799,7 @@ function Dashboard() {
           align-items: center;
           gap: 5px;
           margin-top: 15px;
-          color: #818cf8;
+          color: #9FE870;
           font-size: 11px;
         }
 
@@ -815,43 +815,43 @@ function Dashboard() {
 
         .thinkflow-skill-name {
           margin-top: 4px;
-          color: #94a3b8;
+          color: #454745;
           font-size: 12px;
         }
 
         .light-mode .thinkflow-skill-name {
-          color: #6b7280;
+          color: #454745;
         }
 
         .thinkflow-mini-bar {
           height: 5px;
           margin-top: 16px;
           border-radius: 99px;
-          background: #1a2140;
+          background: #163300;
           overflow: hidden;
         }
 
         .light-mode .thinkflow-mini-bar {
-          background: #eef0f6;
+          background: #F4F6F1;
         }
 
         .thinkflow-mini-bar div {
           height: 100%;
           border-radius: inherit;
-          background: #6366f1;
+          background: #9FE870;
         }
 
         .thinkflow-metrics-card {
           grid-column: 2 / 4;
           padding: 20px;
-          border: 1px solid #202743;
+          border: 1px solid #163300;
           border-radius: 15px;
-          background: #0c1022;
+          background: #0E0F0C;
         }
 
         .light-mode .thinkflow-metrics-card {
           background: #ffffff;
-          border-color: #e5e7eb;
+          border-color: #D9DED5;
           box-shadow:
             0 10px 30px rgba(15, 23, 42, 0.04);
         }
@@ -879,16 +879,16 @@ function Dashboard() {
           display: flex;
           align-items: center;
           gap: 7px;
-          color: #94a3b8;
+          color: #454745;
           font-size: 11px;
         }
 
         .light-mode .thinkflow-metric-name {
-          color: #6b7280;
+          color: #454745;
         }
 
         .thinkflow-metric-name svg {
-          color: #818cf8;
+          color: #9FE870;
         }
 
         .thinkflow-metric-percent {
@@ -900,11 +900,11 @@ function Dashboard() {
           height: 5px;
           overflow: hidden;
           border-radius: 99px;
-          background: #1a2140;
+          background: #163300;
         }
 
         .light-mode .thinkflow-metric-track {
-          background: #eef0f6;
+          background: #F4F6F1;
         }
 
         .thinkflow-metric-track div {
@@ -912,26 +912,26 @@ function Dashboard() {
           border-radius: inherit;
           background: linear-gradient(
             90deg,
-            #6366f1,
-            #8b5cf6
+            #9FE870,
+            #9FE870
           );
         }
 
         .thinkflow-insights-empty {
           padding: 42px 25px;
           text-align: center;
-          border: 1px dashed #252b46;
+          border: 1px dashed rgba(159,232,112,0.12);
           border-radius: 15px;
-          background: #0c1022;
+          background: #0E0F0C;
         }
 
         .light-mode .thinkflow-insights-empty {
           background: #ffffff;
-          border-color: #dfe3ea;
+          border-color: #D9DED5;
         }
 
         .thinkflow-insights-empty svg {
-          color: #6366f1;
+          color: #9FE870;
           margin-bottom: 12px;
         }
 
@@ -942,7 +942,7 @@ function Dashboard() {
 
         .thinkflow-insights-empty p {
           margin: 0;
-          color: #64748b;
+          color: #454745;
           font-size: 12px;
         }
 
@@ -956,7 +956,7 @@ function Dashboard() {
           justify-content: center;
           gap: 9px;
           min-height: 120px;
-          color: #64748b;
+          color: #454745;
           font-size: 13px;
         }
 
@@ -982,7 +982,7 @@ function Dashboard() {
         }
 
         .thinkflow-latest-label span {
-          color: #818cf8;
+          color: #9FE870;
           font-size: 10px;
           font-weight: 700;
           letter-spacing: 1.5px;
@@ -991,11 +991,11 @@ function Dashboard() {
         .thinkflow-latest-line {
           flex: 1;
           height: 1px;
-          background: #202743;
+          background: #163300;
         }
 
         .light-mode .thinkflow-latest-line {
-          background: #e5e7eb;
+          background: #D9DED5;
         }
 
         /* ==============================================
@@ -1038,22 +1038,22 @@ function Dashboard() {
 
 
         /* ==================================================
-           THINKFLOW DASHBOARD NAVBAR — REFERENCE DESIGN
+           THINKFLOW DASHBOARD NAVBAR â€” REFERENCE DESIGN
            ================================================== */
         .dashboard-page {
           --tf-nav-bg: rgba(12, 16, 35, 0.78);
           --tf-nav-border: rgba(148, 163, 184, 0.20);
-          --tf-nav-text: #f8fafc;
-          --tf-nav-muted: #9aa4bd;
+          --tf-nav-text: #f0f5eb;
+          --tf-nav-muted: #454745;
           --tf-nav-hover: rgba(255, 255, 255, 0.055);
-          --tf-nav-active: rgba(99, 102, 241, 0.16);
-          --tf-nav-accent: #a5b4fc;
+          --tf-nav-active: rgba(159,232,112,0.15);
+          --tf-nav-accent: #9FE870;
           min-height: 100vh !important;
           width: 100% !important;
           margin: 0 !important;
           padding: 0 !important;
           display: block !important;
-          background: #080b18 !important;
+          background: #0E0F0C !important;
           color: var(--tf-nav-text) !important;
           overflow-x: hidden !important;
         }
@@ -1061,16 +1061,16 @@ function Dashboard() {
         .dashboard-page.light-mode {
           --tf-nav-bg: rgba(255, 255, 255, 0.78);
           --tf-nav-border: rgba(100, 116, 139, 0.20);
-          --tf-nav-text: #111827;
-          --tf-nav-muted: #667085;
+          --tf-nav-text: #0E0F0C;
+          --tf-nav-muted: #454745;
           --tf-nav-hover: rgba(15, 23, 42, 0.045);
-          --tf-nav-active: rgba(99, 102, 241, 0.09);
-          --tf-nav-accent: #4f46e5;
-          background: #f6f7fb !important;
-          color: #111827 !important;
+          --tf-nav-active: rgba(159,232,112,0.15);
+          --tf-nav-accent: #163300;
+          background: #F4F6F1 !important;
+          color: #0E0F0C !important;
         }
 
-        /* Fixed outer glass panel — intentionally matches the reference navbar */
+        /* Fixed outer glass panel â€” intentionally matches the reference navbar */
         .dashboard-page .dashboard-top-navbar {
           position: fixed !important;
           top: 18px !important;
@@ -1088,7 +1088,7 @@ function Dashboard() {
           border: 1px solid var(--tf-nav-border) !important;
           border-radius: 22px !important;
           background:
-            linear-gradient(135deg, rgba(255,255,255,.055), rgba(255,255,255,.012) 48%, rgba(99,102,241,.035)) ,
+            linear-gradient(135deg, rgba(255,255,255,.055), rgba(255,255,255,.012) 48%, rgba(159,232,112,0.05)) ,
             var(--tf-nav-bg) !important;
           backdrop-filter: blur(24px) saturate(150%) !important;
           -webkit-backdrop-filter: blur(24px) saturate(150%) !important;
@@ -1107,7 +1107,7 @@ function Dashboard() {
           right: 7% !important;
           top: 0 !important;
           height: 1px !important;
-          background: linear-gradient(90deg, transparent, rgba(255,255,255,.32), transparent) !important;
+          background: rgba(159,232,112,0.04) !important;
           pointer-events: none !important;
         }
 
@@ -1118,7 +1118,7 @@ function Dashboard() {
           height: 90px !important;
           left: 18% !important;
           top: -58px !important;
-          background: rgba(99,102,241,.15) !important;
+          background: rgba(159,232,112,0.15) !important;
           filter: blur(35px) !important;
           border-radius: 50% !important;
           pointer-events: none !important;
@@ -1159,15 +1159,15 @@ function Dashboard() {
           align-items: center !important;
           justify-content: center !important;
           border-radius: 11px !important;
-          background: linear-gradient(145deg, #6366f1, #7c3aed) !important;
+          background: #163300 !important;
           color: #fff !important;
           box-shadow:
-            0 10px 28px rgba(99,102,241,.32),
+            0 10px 28px rgba(159,232,112,0.15),
             inset 0 1px 0 rgba(255,255,255,.28) !important;
         }
 
         .dashboard-page .dashboard-top-navbar .dashboard-logo > span > span {
-          color: #818cf8 !important;
+          color: #9FE870 !important;
         }
 
         /* Center navigation */
@@ -1224,18 +1224,18 @@ function Dashboard() {
 
         .dashboard-page .dashboard-top-nav-item.active {
           background: var(--tf-nav-active) !important;
-          border-color: rgba(129,140,248,.20) !important;
+          border-color: rgba(159,232,112,0.15) !important;
           color: var(--tf-nav-accent) !important;
           box-shadow:
             inset 0 1px 0 rgba(255,255,255,.055),
-            0 5px 20px rgba(99,102,241,.08) !important;
+            0 5px 20px rgba(159,232,112,0.15) !important;
         }
 
         .dashboard-page.light-mode .dashboard-top-nav-item.active {
-          background: #eef2ff !important;
-          border-color: #c7d2fe !important;
-          color: #4338ca !important;
-          box-shadow: 0 5px 18px rgba(79,70,229,.10) !important;
+          background: #E2F6D5 !important;
+          border-color: #c4e8b0 !important;
+          color: #163300 !important;
+          box-shadow: 0 5px 18px rgba(22,51,0,0.15) !important;
         }
 
         /* Right actions */
@@ -1301,7 +1301,7 @@ function Dashboard() {
         .dashboard-page .dashboard-top-actions button:hover {
           transform: translateY(-1px) !important;
           background: rgba(255,255,255,.075) !important;
-          border-color: rgba(148,163,184,.32) !important;
+          border-color: rgba(217,222,213,0.5) !important;
         }
 
         .dashboard-page .dashboard-top-actions .dashboard-logout-button svg {
@@ -1311,8 +1311,8 @@ function Dashboard() {
         .dashboard-page.light-mode .dashboard-top-actions .thinkflow-theme-button,
         .dashboard-page.light-mode .dashboard-top-actions .dashboard-logout-button {
           background: rgba(255,255,255,.72) !important;
-          border-color: #d9deea !important;
-          color: #344054 !important;
+          border-color: #D9DED5 !important;
+          color: #0E0F0C !important;
           box-shadow: inset 0 1px 0 rgba(255,255,255,.95), 0 5px 18px rgba(15,23,42,.05) !important;
         }
 
@@ -1488,16 +1488,16 @@ function Dashboard() {
         .dashboard-page.dark-mode .problem-input-card,
         .dashboard-page.dark-mode .ai-report-card,
         .dashboard-page.dark-mode .history-section {
-          background: #0c1022 !important;
-          border-color: #202743 !important;
-          color: #f8fafc !important;
+          background: #0E0F0C !important;
+          border-color: #163300 !important;
+          color: #f0f5eb !important;
           box-shadow: none !important;
         }
 
         .dashboard-page.dark-mode .problem-input-header,
         .dashboard-page.dark-mode .ai-report-header,
         .dashboard-page.dark-mode .history-header {
-          color: #f8fafc !important;
+          color: #f0f5eb !important;
         }
 
         .dashboard-page.dark-mode .problem-input-card h1,
@@ -1507,7 +1507,7 @@ function Dashboard() {
         .dashboard-page.dark-mode .ai-report-card h2,
         .dashboard-page.dark-mode .ai-report-card h3,
         .dashboard-page.dark-mode .history-header h2 {
-          color: #f8fafc !important;
+          color: #f0f5eb !important;
         }
 
         .dashboard-page.dark-mode .problem-input-card p,
@@ -1520,7 +1520,7 @@ function Dashboard() {
         .dashboard-page.dark-mode .report-item,
         .dashboard-page.dark-mode .history-item p,
         .dashboard-page.dark-mode .history-item small {
-          color: #94a3b8 !important;
+          color: #454745 !important;
         }
 
         .dashboard-page.dark-mode .problem-textarea,
@@ -1528,104 +1528,104 @@ function Dashboard() {
         .dashboard-page.dark-mode .monaco-wrapper,
         .dashboard-page.dark-mode .code-editor,
         .dashboard-page.dark-mode .code-area {
-          background: #070a18 !important;
-          border-color: #252b46 !important;
-          color: #f8fafc !important;
+          background: #0E0F0C !important;
+          border-color: rgba(159,232,112,0.12) !important;
+          color: #f0f5eb !important;
         }
 
         .dashboard-page.dark-mode .problem-textarea::placeholder {
-          color: #64748b !important;
+          color: #454745 !important;
         }
 
         .dashboard-page.dark-mode .language-selector {
-          color: #f8fafc !important;
+          color: #f0f5eb !important;
         }
 
         .dashboard-page.dark-mode .language-selector option {
-          background: #0c1022 !important;
-          color: #f8fafc !important;
+          background: #0E0F0C !important;
+          color: #f0f5eb !important;
         }
 
         .dashboard-page.dark-mode .problem-input-actions {
-          border-color: #202743 !important;
+          border-color: #163300 !important;
         }
 
         .dashboard-page.dark-mode .reset-button {
-          background: #151a2e !important;
-          border-color: #2a314b !important;
-          color: #a0a9bf !important;
+          background: #0f1410 !important;
+          border-color: #163300 !important;
+          color: #454745 !important;
         }
 
         .dashboard-page.dark-mode .reset-button:hover {
-          background: #1b2138 !important;
+          background: #0f1410 !important;
           color: #ffffff !important;
         }
 
         .dashboard-page.dark-mode .analysis-error {
-          background: #2a1420 !important;
-          border-color: #6b263d !important;
+          background: rgba(127,29,29,0.3) !important;
+          border-color: rgba(248,113,113,0.3) !important;
           color: #fda4af !important;
         }
 
         .dashboard-page.dark-mode .ai-report-card .ai-status,
         .dashboard-page.dark-mode .ai-status.analyzed {
-          background: #171c38 !important;
-          border-color: #303866 !important;
-          color: #a5b4fc !important;
+          background: #0f1410 !important;
+          border-color: #163300 !important;
+          color: #9FE870 !important;
         }
 
         .dashboard-page.dark-mode .ai-empty {
-          background: #0c1022 !important;
-          border-color: #252b46 !important;
-          color: #94a3b8 !important;
+          background: #0E0F0C !important;
+          border-color: rgba(159,232,112,0.12) !important;
+          color: #454745 !important;
         }
 
         .dashboard-page.dark-mode .ai-pattern,
         .dashboard-page.dark-mode .metric-card,
         .dashboard-page.dark-mode .observation,
         .dashboard-page.dark-mode .report-column {
-          background: #10152b !important;
-          border-color: #252b46 !important;
+          background: #0E0F0C !important;
+          border-color: rgba(159,232,112,0.12) !important;
         }
 
         .dashboard-page.dark-mode .metric-progress {
-          background: #1a2140 !important;
+          background: #163300 !important;
         }
 
         .dashboard-page.dark-mode .pattern-row,
         .dashboard-page.dark-mode .report-bottom {
-          border-color: #252b46 !important;
+          border-color: rgba(159,232,112,0.12) !important;
         }
 
         .dashboard-page.dark-mode .history-item {
-          background: #10152b !important;
-          border-color: #252b46 !important;
-          color: #f8fafc !important;
+          background: #0E0F0C !important;
+          border-color: rgba(159,232,112,0.12) !important;
+          color: #f0f5eb !important;
         }
 
         .dashboard-page.dark-mode .history-item:hover {
-          background: #171c38 !important;
-          border-color: #3b4380 !important;
+          background: #0f1410 !important;
+          border-color: #163300 !important;
         }
 
         .dashboard-page.dark-mode .history-item strong {
-          color: #f8fafc !important;
+          color: #f0f5eb !important;
         }
 
         .dashboard-page.dark-mode .history-item-icon {
-          background: #171c38 !important;
-          color: #a5b4fc !important;
+          background: #0f1410 !important;
+          color: #9FE870 !important;
         }
 
         .dashboard-page.dark-mode .clear-history-button {
-          background: #151a2e !important;
-          border-color: #2a314b !important;
+          background: #0f1410 !important;
+          border-color: #163300 !important;
           color: #cbd5e1 !important;
         }
 
         .dashboard-page.dark-mode .clear-history-button:hover {
-          background: #1b2138 !important;
-          border-color: #3b4380 !important;
+          background: #0f1410 !important;
+          border-color: #163300 !important;
           color: #ffffff !important;
         }
 
@@ -1634,8 +1634,8 @@ function Dashboard() {
         .dashboard-page.light-mode .ai-report-card,
         .dashboard-page.light-mode .history-section {
           background: #ffffff !important;
-          border-color: #e5e7eb !important;
-          color: #111827 !important;
+          border-color: #D9DED5 !important;
+          color: #0E0F0C !important;
         }
 
         .dashboard-page.light-mode .problem-textarea,
@@ -1644,14 +1644,14 @@ function Dashboard() {
         .dashboard-page.light-mode .code-editor,
         .dashboard-page.light-mode .code-area {
           background: #ffffff !important;
-          border-color: #dfe3ea !important;
-          color: #111827 !important;
+          border-color: #D9DED5 !important;
+          color: #0E0F0C !important;
         }
 
         .dashboard-page.light-mode .history-item {
           background: #f9fafb !important;
-          border-color: #e5e7eb !important;
-          color: #111827 !important;
+          border-color: #D9DED5 !important;
+          color: #0E0F0C !important;
         }
 
         .dashboard-page.light-mode .history-item strong,
@@ -1662,39 +1662,39 @@ function Dashboard() {
         .dashboard-page.light-mode .ai-report-card h2,
         .dashboard-page.light-mode .ai-report-card h3,
         .dashboard-page.light-mode .history-header h2 {
-          color: #111827 !important;
+          color: #0E0F0C !important;
         }
 
         /* ==================================================
-   DARK MODE — TEXT VISIBILITY FIX
+   DARK MODE â€” TEXT VISIBILITY FIX
    ================================================== */
 
 .dashboard-page.dark-mode {
-  color: #f8fafc !important;
+  color: #f0f5eb !important;
 }
 
 /* Main dashboard heading */
 .dashboard-page.dark-mode .simple-dashboard-header h1 {
-  color: #f8fafc !important;
+  color: #f0f5eb !important;
 }
 
 /* Workspace / section labels */
 .dashboard-page.dark-mode .dashboard-eyebrow {
-  color: #94a3b8 !important;
+  color: #454745 !important;
 }
 
 .dashboard-page.dark-mode .thinkflow-section-label,
 .dashboard-page.dark-mode .thinkflow-insights-label {
-  color: #94a3b8 !important;
+  color: #454745 !important;
 }
 
 /* Profile */
 .dashboard-page.dark-mode .dashboard-profile strong {
-  color: #f8fafc !important;
+  color: #f0f5eb !important;
 }
 
 .dashboard-page.dark-mode .dashboard-profile small {
-  color: #94a3b8 !important;
+  color: #454745 !important;
 }
 
 /* General headings */
@@ -1702,39 +1702,39 @@ function Dashboard() {
 .dashboard-page.dark-mode h2,
 .dashboard-page.dark-mode h3,
 .dashboard-page.dark-mode h4 {
-  color: #f8fafc !important;
+  color: #f0f5eb !important;
 }
 
 /* General paragraph text */
 .dashboard-page.dark-mode p {
-  color: #94a3b8 !important;
+  color: #454745 !important;
 }
 
 
-/* Keep important purple/blue accent text visible */
+/* Green accent text — dark mode */
 .dashboard-page.dark-mode .thinkflow-insights-count {
-  color: #a5b4fc !important;
+  color: #9FE870 !important;
 }
 
 
 
         /* ==================================================
-           HISTORY DETAIL — ORIGINAL PROBLEM + CODE
+           HISTORY DETAIL â€” ORIGINAL PROBLEM + CODE
            ================================================== */
         .dashboard-page .history-detail-card {
           width: 100%;
           margin: 0 0 22px;
           padding: 22px;
           box-sizing: border-box;
-          border: 1px solid #202743;
+          border: 1px solid #163300;
           border-radius: 18px;
-          background: #0c1022;
+          background: #0E0F0C;
           box-shadow: 0 16px 45px rgba(0,0,0,.16);
         }
 
         .dashboard-page.light-mode .history-detail-card {
           background: #ffffff;
-          border-color: #e5e7eb;
+          border-color: #D9DED5;
           box-shadow: 0 12px 35px rgba(15,23,42,.06);
         }
 
@@ -1750,13 +1750,13 @@ function Dashboard() {
           display: flex;
           align-items: center;
           gap: 10px;
-          color: #f8fafc;
+          color: #f0f5eb;
           font-size: 16px;
           font-weight: 700;
         }
 
         .dashboard-page.light-mode .history-detail-title {
-          color: #111827;
+          color: #0E0F0C;
         }
 
         .history-detail-badge {
@@ -1765,9 +1765,9 @@ function Dashboard() {
           height: 30px;
           padding: 0 10px;
           border-radius: 8px;
-          border: 1px solid #303866;
-          background: #171c38;
-          color: #a5b4fc;
+          border: 1px solid #163300;
+          background: #0f1410;
+          color: #9FE870;
           font-size: 11px;
           font-weight: 600;
           text-transform: uppercase;
@@ -1775,15 +1775,15 @@ function Dashboard() {
         }
 
         .dashboard-page.light-mode .history-detail-badge {
-          border-color: #c7d2fe;
-          background: #eef2ff;
-          color: #4338ca;
+          border-color: #c4e8b0;
+          background: #E2F6D5;
+          color: #163300;
         }
 
         .history-detail-label {
           display: block;
           margin-bottom: 8px;
-          color: #94a3b8;
+          color: #454745;
           font-size: 10px;
           font-weight: 700;
           letter-spacing: .12em;
@@ -1791,15 +1791,15 @@ function Dashboard() {
         }
 
         .dashboard-page.light-mode .history-detail-label {
-          color: #6b7280;
+          color: #454745;
         }
 
         .history-detail-problem {
           margin-bottom: 18px;
           padding: 14px 16px;
-          border: 1px solid #252b46;
+          border: 1px solid rgba(159,232,112,0.12);
           border-radius: 12px;
-          background: #070a18;
+          background: #0E0F0C;
           color: #e2e8f0;
           font-size: 14px;
           line-height: 1.65;
@@ -1807,9 +1807,9 @@ function Dashboard() {
         }
 
         .dashboard-page.light-mode .history-detail-problem {
-          background: #f8fafc;
-          border-color: #e5e7eb;
-          color: #111827;
+          background: #f0f5eb;
+          border-color: #D9DED5;
+          color: #0E0F0C;
         }
 
         .history-detail-code {
@@ -1818,7 +1818,7 @@ function Dashboard() {
           max-height: 430px;
           overflow: auto;
           box-sizing: border-box;
-          border: 1px solid #252b46;
+          border: 1px solid rgba(159,232,112,0.12);
           border-radius: 12px;
           background: #050712;
           color: #e2e8f0;
@@ -1830,9 +1830,9 @@ function Dashboard() {
         }
 
         .dashboard-page.light-mode .history-detail-code {
-          background: #f8fafc;
-          border-color: #dfe3ea;
-          color: #111827;
+          background: #f0f5eb;
+          border-color: #D9DED5;
+          color: #0E0F0C;
         }
 
         @media (max-width: 720px) {
@@ -1856,14 +1856,14 @@ function Dashboard() {
 .thinkflow-code-editor
 .monaco-editor
 .current-line {
-  background: #eef2ff !important;
+  background: #E2F6D5 !important;
 }
 
 .dashboard-page.light-mode
 .thinkflow-code-editor
 .monaco-editor
 .current-line-margin {
-  background: #eef2ff !important;
+  background: #E2F6D5 !important;
 }
 
 
@@ -1901,9 +1901,9 @@ function Dashboard() {
           text-align: center !important;
           animation: tfModalIn 0.22s cubic-bezier(0.34,1.56,0.64,1) !important;
           font-family: Poppins, -apple-system, BlinkMacSystemFont, sans-serif !important;
-          /* default (dark) background — overridden by .dark-mode/.light-mode below */
+          /* default (dark) background â€” overridden by .dark-mode/.light-mode below */
           background: #0d1424 !important;
-          border: 1px solid #202743 !important;
+          border: 1px solid #163300 !important;
           box-shadow: 0 24px 60px rgba(0,0,0,0.55) !important;
           color: #f1f5f9 !important;
         }
@@ -1916,7 +1916,7 @@ function Dashboard() {
         /* Dark mode card */
         .dark-mode .logout-popup {
           background: #0d1424 !important;
-          border: 1px solid #202743 !important;
+          border: 1px solid #163300 !important;
           box-shadow: 0 24px 60px rgba(0,0,0,0.55) !important;
           color: #f1f5f9 !important;
         }
@@ -1924,7 +1924,7 @@ function Dashboard() {
         /* Light mode card */
         .light-mode .logout-popup {
           background: #ffffff !important;
-          border: 1px solid #e5e7eb !important;
+          border: 1px solid #D9DED5 !important;
           box-shadow: 0 24px 60px rgba(15,23,42,0.14) !important;
           color: #0f172a !important;
         }
@@ -1937,17 +1937,17 @@ function Dashboard() {
           height: 48px !important;
           border-radius: 14px !important;
           margin: 0 auto 18px !important;
-          color: #818cf8 !important;
+          color: #9FE870 !important;
         }
 
         .dark-mode .logout-popup-icon {
-          background: #1a2140 !important;
-          border: 1px solid #252d50 !important;
+          background: #163300 !important;
+          border: 1px solid rgba(159,232,112,0.10) !important;
         }
 
         .light-mode .logout-popup-icon {
-          background: #eef2ff !important;
-          border: 1px solid #e0e7ff !important;
+          background: #E2F6D5 !important;
+          border: 1px solid #E2F6D5 !important;
         }
 
         .logout-popup h3 {
@@ -1972,11 +1972,11 @@ function Dashboard() {
         }
 
         .dark-mode .logout-popup p {
-          color: #94a3b8 !important;
+          color: #454745 !important;
         }
 
         .light-mode .logout-popup p {
-          color: #64748b !important;
+          color: #454745 !important;
         }
 
         .logout-popup-actions {
@@ -2011,20 +2011,20 @@ function Dashboard() {
 
         .dark-mode .logout-cancel-button {
           background: #1e2740 !important;
-          color: #94a3b8 !important;
-          border: 1px solid #252d50 !important;
+          color: #454745 !important;
+          border: 1px solid rgba(159,232,112,0.10) !important;
         }
 
         .light-mode .logout-cancel-button {
           background: #f1f5f9 !important;
-          color: #475569 !important;
+          color: #454745 !important;
           border: 1px solid #e2e8f0 !important;
         }
 
         .logout-confirm-button {
-          background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;
+          background: linear-gradient(135deg, #9FE870, #9FE870) !important;
           color: #ffffff !important;
-          box-shadow: 0 4px 14px rgba(99,102,241,0.32) !important;
+          box-shadow: 0 4px 14px rgba(159,232,112,0.15) !important;
         }
 
       `}</style>
@@ -2254,7 +2254,7 @@ function Dashboard() {
                       Overall Thinking Score
                     </div>
 
-                    <Award size={18} color="#818cf8" />
+                    <Award size={18} color="#9FE870" />
 
                   </div>
 
@@ -2690,7 +2690,7 @@ function Dashboard() {
                             : "Recently analyzed"}
 
                           {item.language
-                            ? ` • ${item.language}`
+                            ? ` â€¢ ${item.language}`
                             : ""}
                         </small>
 

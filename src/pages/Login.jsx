@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   ArrowLeft,
@@ -353,7 +353,7 @@ function Login() {
 
           <div className="auth-footer">
             <span>THINKFLOW AI</span>
-            <span>•</span>
+            <span>â€¢</span>
             <span>
               UNDERSTAND THE PROCESS
             </span>

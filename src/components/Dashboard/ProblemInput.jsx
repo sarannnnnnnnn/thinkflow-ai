@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import Editor from "@monaco-editor/react";
 import { Code2, RotateCcw, Sparkles } from "lucide-react";
 
@@ -318,14 +318,14 @@ function ProblemInput({ onAnalysis }) {
           min-height: 420px !important;
           overflow: hidden !important;
           box-sizing: border-box !important;
-          border: 1px solid #202743 !important;
+          border: 1px solid #163300 !important;
           border-radius: 14px !important;
           background: #050816 !important;
           isolation: isolate;
         }
 
         /* =========================================
-           MONACO — DO NOT USE GLOBAL .line-numbers
+           MONACO â€” DO NOT USE GLOBAL .line-numbers
            ========================================= */
 
         .thinkflow-code-editor .monaco-editor,
@@ -340,12 +340,12 @@ function ProblemInput({ onAnalysis }) {
 
         .thinkflow-code-editor .monaco-editor .line-numbers {
           background: transparent !important;
-          color: #68738F !important;
+          color: #454745 !important;
           font-weight: 600 !important;
         }
 
         .thinkflow-code-editor .monaco-editor .active-line-number {
-          color: #A78BFA !important;
+          color: #9FE870 !important;
         }
 
         .thinkflow-code-editor .monaco-editor .current-line {
@@ -355,7 +355,7 @@ function ProblemInput({ onAnalysis }) {
 
         .thinkflow-code-editor .monaco-editor textarea,
         .thinkflow-code-editor .monaco-editor .inputarea {
-          caret-color: #A78BFA !important;
+          caret-color: #9FE870 !important;
         }
 
         .thinkflow-code-editor .monaco-scrollable-element > .scrollbar > .slider {
@@ -406,7 +406,7 @@ function ProblemInput({ onAnalysis }) {
 
         .dashboard-page.light-mode .thinkflow-code-editor {
           background: #ffffff !important;
-          border-color: #dfe3ea !important;
+          border-color: #D9DED5 !important;
         }
 
         .dashboard-page.light-mode .thinkflow-code-editor .monaco-editor,
@@ -420,11 +420,11 @@ function ProblemInput({ onAnalysis }) {
         }
 
         .dashboard-page.light-mode .thinkflow-code-editor .monaco-editor .line-numbers {
-          color: #8B93A7 !important;
+          color: #454745 !important;
         }
 
         .dashboard-page.light-mode .thinkflow-code-editor .monaco-editor .active-line-number {
-          color: #6366F1 !important;
+          color: #163300 !important;
         }
 
         @media (max-width: 700px) {
